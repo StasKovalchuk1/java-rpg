@@ -1,15 +1,13 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.scene.control.*;
 
-import java.awt.*;
+public class Main extends Application{
 
-public class Main extends Application {
-
-    Button button;
+    private final GamePane gamePane = new GamePane(this);
+    private VBox root;
 
     public static void main(String[] args) {
         launch(args);
@@ -18,14 +16,20 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Title");
-        button = new Button();
-        button.setText("Click me");
 
-        StackPane layout = new StackPane();
-        layout.getChildren().add(button);
+//        Rectangle rect = new Rectangle(gamePane.tileSize, gamePane.tileSize);
+        root = new VBox(gamePane);
 
-        Scene scene = new Scene(layout, 300, 250);
+        final Scene scene = new Scene(root);
+        gamePane.requestFocus();
         stage.setScene(scene);
         stage.show();
+
+        gamePane.startGameThread();
     }
+
+    public VBox getRoot() {
+        return root;
+    }
+
 }
