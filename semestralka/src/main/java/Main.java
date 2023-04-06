@@ -17,7 +17,6 @@ public class Main extends Application{
     public void start(Stage stage) throws Exception {
         stage.setTitle("Title");
 
-//        Rectangle rect = new Rectangle(gamePane.tileSize, gamePane.tileSize);
         root = new VBox(gamePane);
 
         final Scene scene = new Scene(root);
@@ -26,10 +25,6 @@ public class Main extends Application{
         stage.show();
 
         gamePane.startGameThread();
-    }
-
-    public VBox getRoot() {
-        return root;
     }
 
 }

@@ -1,30 +1,29 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+
 
 public class Player extends Entity{
-
     GamePane gamePane;
     KeyHandler keyHandler;
-
     Image playerImage;
-
+    public final int screenX;
+    public final int screenY;
     public Player(GamePane gamePane, KeyHandler keyHandler){
         this.gamePane = gamePane;
         this.keyHandler = keyHandler;
+        screenX = gamePane.getScreenWidth() / 2 - (gamePane.tileSize / 2);
+        screenY = gamePane.getScreenHeight() /2 - (gamePane.tileSize / 2);
         setDefaultValues();
         getPlayerImage();
+        rectangle = new Rectangle(worldX + 8, worldY + 16, 32, 32);// WTF???
     }
 
     public void setDefaultValues(){
-
-        x = 100;
-        y = 100;
+        worldX = gamePane.tileSize * 24;
+        worldY = gamePane.tileSize * 24;
         speed = 4;
         direction = "DOWN";
     }
@@ -41,37 +40,48 @@ public class Player extends Entity{
     }
 
     public void update(){
-        prevX = x;
-        prevY = y;
+        prevX = worldX;
+        prevY = worldY;
+        rectangle.setX(worldX + 8);
+        rectangle.setY(worldY + 16);
         if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed){
-            if (keyHandler.upPressed == true){
-                y -= speed;
-                direction = "UP";
-            } else if (keyHandler.downPressed == true){
-                y += speed;
-                direction = "DOWN";
-            } else if (keyHandler.leftPressed == true){
-                x -= speed;
-                direction = "LEFT";
-            } else if (keyHandler.rightPressed == true){
-                x += speed;
-                direction = "RIGHT";
-            }
-            spriteCounter++;
-            if (spriteCounter > 10d) {
-                if (spriteNum == 1){
-                    spriteNum = 2;
-                } else {
-                    spriteNum = 1;
+            collisionOn = false;
+            gamePane.collisionCheck.check(this);
+                if (keyHandler.upPressed){
+                    if (!collisionOn && worldY - speed >= 0){
+                        worldY -= speed;
+                    }
+                    direction = "UP";
+                } else if (keyHandler.downPressed){
+                    if (!collisionOn && worldY + speed <= gamePane.worldHeight){
+                        worldY += speed;
+                    }
+                    direction = "DOWN";
+                } else if (keyHandler.leftPressed){
+                    if (!collisionOn && worldX - speed >= 0){
+                        worldX -= speed;
+                    }
+                    direction = "LEFT";
+                } else if (keyHandler.rightPressed){
+                    if (!collisionOn && worldX + speed <= gamePane.worldWidth){
+                        worldX += speed;
+                    }
+                    direction = "RIGHT";
                 }
-                spriteCounter = 0;
-            }
-        }
 
+                spriteCounter++;
+                if (spriteCounter > 10) {
+                    if (spriteNum == 1){
+                        spriteNum = 2;
+                    } else {
+                        spriteNum = 1;
+                    }
+                    spriteCounter = 0;
+                }
+            }
     }
 
     public void draw(GraphicsContext gc){
-
         switch (direction) {
             case "UP":
                 if (spriteNum == 1) {
@@ -107,6 +117,6 @@ public class Player extends Entity{
                 break;
         }
 
-        gc.drawImage(playerImage, x, y, gamePane.tileSize, gamePane.tileSize);
+        gc.drawImage(playerImage, screenX, screenY, gamePane.tileSize, gamePane.tileSize);
     }
 }

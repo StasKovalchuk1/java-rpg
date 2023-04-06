@@ -1,10 +1,9 @@
 import javafx.scene.image.Image;
-
-import java.awt.image.BufferedImage;
+import javafx.scene.shape.Rectangle;
 
 public class Entity {
 
-    public int x, y;
+    public int worldX, worldY;
     public int prevX, prevY;
     public int speed;
 
@@ -13,4 +12,6 @@ public class Entity {
 
     public int spriteCounter = 0;
     public int spriteNum = 1;
+    public Rectangle rectangle;
+    public boolean collisionOn = false;
 }

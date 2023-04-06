@@ -10,14 +10,20 @@ public class GamePane extends Pane implements Runnable{
     Main main;
     private Canvas canvas ;
 
+    //SCREEN
     final int originalTile = 16;
     final int scale = 3;
-
     public final int tileSize = originalTile * scale;
     final int maxScreenCol = 16;
     final int maxScreenRow = 12;
     private final int screenWidth = tileSize * maxScreenCol; // 768 pixels
     private final int screenHeight  = tileSize * maxScreenRow;// 576 pixels
+
+    //WORLD
+    final int maxWorldCol = 50;
+    final int maxWorldRow = 50;
+    final int worldWidth = tileSize * maxWorldRow;
+    final int worldHeight = tileSize * maxWorldCol;
 
     public int getScreenWidth(){
         return screenWidth;
@@ -29,16 +35,9 @@ public class GamePane extends Pane implements Runnable{
 
     Thread gameThread;
     KeyHandler keyHandler = new KeyHandler();
-    Player player = new Player(this, keyHandler);
-
-    //set default
-    int playerX = 100;
-    int playerY = 100;
-    int newPlayerX;
-    int newPlayerY;
-    int tempX = playerX;
-    int tempY = playerY;
-    int playerSpeed = 4;
+    public Player player = new Player(this, keyHandler);
+    TileManager tileManager = new TileManager(this);
+    public CollisionCheck collisionCheck = new CollisionCheck(this);
 
     public GamePane(Main main) {
         this.setPrefSize(screenWidth, screenHeight);
@@ -61,8 +60,7 @@ public class GamePane extends Pane implements Runnable{
     @Override
     public void run() {
         while (gameThread != null) {
-//            long currentTime = System.nanoTime();
-            Platform.runLater(() -> {
+            Platform.runLater(() -> { // меняется только задний фон
                 update();
                 draw();
             });
@@ -75,7 +73,7 @@ public class GamePane extends Pane implements Runnable{
 
     }
 
-    public void update() {
+    public void update(){
         player.update();
 
     }
@@ -83,13 +81,14 @@ public class GamePane extends Pane implements Runnable{
     public void draw(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
         renderMap(gc);
+        tileManager.draw(gc);
         player.draw(gc);
 
     }
 
     public void renderMap(GraphicsContext gc){
-        gc.clearRect(0, 0, getScreenWidth(), getScreenHeight());
+        gc.clearRect(0, 0, worldWidth, worldHeight);
         gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, getScreenWidth(), getScreenHeight());
+        gc.fillRect(0, 0, screenWidth, screenHeight);
     }
 }
