@@ -2,13 +2,12 @@ import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class GamePane extends Pane implements Runnable{
+public class GamePane extends Pane{
 
     Main main;
-    private Canvas canvas ;
+    public Canvas canvas ;
 
     //SCREEN
     final int originalTile = 16;
@@ -34,9 +33,11 @@ public class GamePane extends Pane implements Runnable{
     }
 
     Thread gameThread;
+    MyTimer myTimer = new MyTimer(this);
     KeyHandler keyHandler = new KeyHandler();
     public Player player = new Player(this, keyHandler);
     TileManager tileManager = new TileManager(this);
+    ItemManager itemManager = new ItemManager(this);
     public CollisionCheck collisionCheck = new CollisionCheck(this);
 
     public GamePane(Main main) {
@@ -51,39 +52,7 @@ public class GamePane extends Pane implements Runnable{
     }
 
     public void startGameThread() {
-
-        gameThread = new Thread(this);
-        gameThread.start();
-
-    }
-
-    @Override
-    public void run() {
-        while (gameThread != null) {
-            Platform.runLater(() -> { // меняется только задний фон
-                update();
-                draw();
-            });
-            try {
-                Thread.sleep(16);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    public void update(){
-        player.update();
-
-    }
-
-    public void draw(){
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        renderMap(gc);
-        tileManager.draw(gc);
-        player.draw(gc);
-
+        myTimer.start();
     }
 
     public void renderMap(GraphicsContext gc){

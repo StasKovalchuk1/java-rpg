@@ -1,7 +1,7 @@
 6
-0 tiles/grass.png
-1 tiles/earth.png
+0 tiles/grass.png passable
+1 tiles/earth.png passable
 2 tiles/wall.png solid
 3 tiles/water.png solid
 4 tiles/tree.png solid
-5 tiles/road.png
+5 tiles/road.png passable
