@@ -1,4 +1,4 @@
-0 key items/key.png 100 100 false
-1 sword items/sword.png 100 2200 false
-2 chest items/chest.png 2200 2200 false
-3 shield items/tent.png -1 -1 true
+key 3 3 false
+sword 42 3 false
+chest 40 40 false
+shield -1 -1 true

@@ -4,7 +4,7 @@ import javafx.scene.input.KeyEvent;
 
 public class KeyHandler implements EventHandler<KeyEvent> {
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed, inventoryPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, inventoryPressed, chestPressed;
 
     @Override
     public void handle(KeyEvent keyEvent) {
@@ -26,6 +26,9 @@ public class KeyHandler implements EventHandler<KeyEvent> {
                     if (inventoryPressed) inventoryPressed = false;
                     else inventoryPressed = true;
                     break;
+                case L:
+                    chestPressed = true;
+                    break;
             }
         } else if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED){
             switch (keyEvent.getCode()){
@@ -40,6 +43,9 @@ public class KeyHandler implements EventHandler<KeyEvent> {
                     break;
                 case D:
                     rightPressed = false;
+                    break;
+                case L:
+                    chestPressed = false;
                     break;
             }
         }

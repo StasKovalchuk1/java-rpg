@@ -72,8 +72,8 @@ public class TileManager {
                 int screenX = worldX - gamePane.player.worldX + gamePane.player.screenX;
                 int screenY = worldY - gamePane.player.worldY + gamePane.player.screenY;
                 // print only tiles which are on the screen
-                if ((screenX + gamePane.tileSize >= 0 && screenX - gamePane.tileSize <= gamePane.getScreenWidth()) &&
-                        (screenY + gamePane.tileSize >= 0 && screenY - gamePane.tileSize <= gamePane.getScreenHeight())){
+                if ((screenX + gamePane.tileSize >= 0 && screenX - gamePane.tileSize <= gamePane.screenWidth) &&
+                        (screenY + gamePane.tileSize >= 0 && screenY - gamePane.tileSize <= gamePane.screenHeight)){
                     gc.drawImage(tiles[index].image, screenX, screenY, gamePane.tileSize, gamePane.tileSize);
                 }
             }
