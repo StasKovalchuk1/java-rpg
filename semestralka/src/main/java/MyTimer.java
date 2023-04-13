@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 public class MyTimer extends AnimationTimer {
     GamePane gamePane;
 
-    public MyTimer(GamePane gamePane){
+    public MyTimer(GamePane gamePane) {
         this.gamePane = gamePane;
     }
 
@@ -15,11 +15,12 @@ public class MyTimer extends AnimationTimer {
         draw();
     }
 
-    public void update(){
+    public void update() {
         gamePane.enemy.update();
         gamePane.player.update();
     }
-    public void draw(){
+
+    public void draw() {
         GraphicsContext gc = gamePane.getGraphicsContext2D();
         renderMap(gc);
         gamePane.tileManager.draw(gc);
@@ -28,7 +29,8 @@ public class MyTimer extends AnimationTimer {
         gamePane.inventory.draw(gc);
         gamePane.player.draw(gc);
     }
-    public void renderMap(GraphicsContext gc){
+
+    public void renderMap(GraphicsContext gc) {
         gc.clearRect(0, 0, gamePane.worldWidth, gamePane.worldHeight);
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, gamePane.screenWidth, gamePane.screenHeight);

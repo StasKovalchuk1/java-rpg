@@ -1,6 +1,7 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
+
 import java.io.IOException;
 
 public class Player extends Entity {
@@ -44,6 +45,7 @@ public class Player extends Entity {
         right2 = new Image("hero1/right2.png");
     }
 
+    @Override
     public void update() {
         rectangle.setX(worldX + 8);
         rectangle.setY(worldY + 8);
@@ -89,6 +91,7 @@ public class Player extends Entity {
         }
     }
 
+    @Override
     public void draw(GraphicsContext gc) {
         switch (direction) {
             case "UP":

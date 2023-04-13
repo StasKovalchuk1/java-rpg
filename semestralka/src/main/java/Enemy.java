@@ -32,6 +32,7 @@ public class Enemy extends Entity {
         radius = 2 * gamePane.tileSize;
     }
 
+    @Override
     public void update() {
         walking();
         switch (direction){
@@ -104,6 +105,7 @@ public class Enemy extends Entity {
         }
     }
 
+    @Override
     public void draw(GraphicsContext gc){
         int screenX = worldX - gamePane.player.worldX + gamePane.player.screenX;
         int screenY = worldY - gamePane.player.worldY + gamePane.player.screenY;

@@ -1,3 +1,4 @@
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 
@@ -12,4 +13,7 @@ public abstract class Entity {
     public int spriteNum = 1;
     public Rectangle rectangle;
     public boolean collisionOn = false;
+
+    public void update(){}
+    public void draw(GraphicsContext gc){}
 }

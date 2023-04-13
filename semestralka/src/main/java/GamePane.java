@@ -1,6 +1,5 @@
 import javafx.scene.canvas.Canvas;
 
-
 public class GamePane extends Canvas{
     //SCREEN
     final int originalTile = 16;
