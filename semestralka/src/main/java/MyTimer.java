@@ -15,12 +15,12 @@ public class MyTimer extends AnimationTimer {
         draw();
     }
 
-    public void update() {
+    private void update() {
         gamePane.enemy.update();
         gamePane.player.update();
     }
 
-    public void draw() {
+    private void draw() {
         GraphicsContext gc = gamePane.getGraphicsContext2D();
         renderMap(gc);
         gamePane.tileManager.draw(gc);
@@ -30,9 +30,9 @@ public class MyTimer extends AnimationTimer {
         gamePane.player.draw(gc);
     }
 
-    public void renderMap(GraphicsContext gc) {
+    private void renderMap(GraphicsContext gc) {
         gc.clearRect(0, 0, gamePane.worldWidth, gamePane.worldHeight);
-        gc.setFill(Color.WHITE);
+        gc.setFill(Color.rgb(111, 175, 242));
         gc.fillRect(0, 0, gamePane.screenWidth, gamePane.screenHeight);
     }
 }

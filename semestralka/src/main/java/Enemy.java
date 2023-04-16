@@ -13,7 +13,7 @@ public class Enemy extends Entity {
         getEnemyImage();
     }
 
-    public void getEnemyImage() {
+    private void getEnemyImage() {
         up1 = new javafx.scene.image.Image("enemy/up_1.png");
         up2 = new javafx.scene.image.Image("enemy/up_2.png");
         down1 = new javafx.scene.image.Image("enemy/down_1.png");
@@ -24,7 +24,7 @@ public class Enemy extends Entity {
         right2 = new javafx.scene.image.Image("enemy/right_2.png");
     }
 
-    public void setDefaultValues() {
+    private void setDefaultValues() {
         worldX = 1872;
         worldY = 1872;
         speed = 1;

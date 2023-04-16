@@ -27,14 +27,14 @@ public class Player extends Entity {
 
     }
 
-    public void setDefaultValues() {
+    private void setDefaultValues() {
         worldX = gamePane.tileSize * 24;
         worldY = gamePane.tileSize * 24;
         speed = 8;
         direction = "DOWN";
     }
 
-    public void getPlayerImage() {
+    private void getPlayerImage() {
         up1 = new Image("hero1/up1.png");
         up2 = new Image("hero1/up2.png");
         down1 = new Image("hero1/down1.png");

@@ -23,7 +23,7 @@ public class TileManager {
         fillMap(mapFile);
     }
 
-    public void getTiles() throws IOException {
+    private void getTiles() throws IOException {
         FileReader fileReader = new FileReader(tilesFile);
         BufferedReader reader = new BufferedReader(fileReader);
         String line = reader.readLine();
@@ -45,7 +45,7 @@ public class TileManager {
         }
     }
 
-    public void fillMap(File file) {
+    private void fillMap(File file) {
         try {
             FileReader fileReader = new FileReader(file);
             BufferedReader reader = new BufferedReader(fileReader);

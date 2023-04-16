@@ -14,6 +14,8 @@ public abstract class Entity {
     public Rectangle rectangle;
     public boolean collisionOn = false;
 
-    public void update(){}
-    public void draw(GraphicsContext gc){}
+    public abstract void update();
+    public abstract void draw(GraphicsContext gc);
+    public abstract void attack();
+    public abstract void defend();
 }
