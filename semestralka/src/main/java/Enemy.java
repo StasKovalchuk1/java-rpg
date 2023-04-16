@@ -114,4 +114,14 @@ public class Enemy extends Entity {
             gc.drawImage(enemyImage, screenX, screenY, gamePane.tileSize, gamePane.tileSize);
         }
     }
+
+    @Override
+    public void attack() {
+
+    }
+
+    @Override
+    public void defend() {
+
+    }
 }

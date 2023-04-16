@@ -129,4 +129,14 @@ public class Player extends Entity {
         }
         gc.drawImage(playerImage, screenX, screenY, gamePane.tileSize, gamePane.tileSize);
     }
+
+    @Override
+    public void attack() {
+        
+    }
+
+    @Override
+    public void defend() {
+
+    }
 }
