@@ -1,3 +1,6 @@
+package entities;
+
+import main.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
@@ -5,17 +8,17 @@ import javafx.scene.shape.Rectangle;
 import java.io.IOException;
 
 public class Player extends Entity {
-    GamePane gamePane;
-    KeyHandler keyHandler;
-    Image playerImage;
+    private GamePane gamePane;
+    private KeyHandler keyHandler;
+    private Image playerImage;
     public final int screenX;
     public final int screenY;
 
     public Player(GamePane gamePane, KeyHandler keyHandler) {
         this.gamePane = gamePane;
         this.keyHandler = keyHandler;
-        screenX = gamePane.screenWidth / 2 - (gamePane.tileSize / 2);
-        screenY = gamePane.screenHeight / 2 - (gamePane.tileSize / 2);
+        screenX = gamePane.getScreenWidth() / 2 - (gamePane.getTileSize() / 2);
+        screenY = gamePane.getScreenHeight() / 2 - (gamePane.getTileSize() / 2);
         setDefaultValues();
         getPlayerImage();
         rectangle = new Rectangle(worldX + 8, worldY + 16, 32, 32);
@@ -28,8 +31,8 @@ public class Player extends Entity {
     }
 
     private void setDefaultValues() {
-        worldX = gamePane.tileSize * 24;
-        worldY = gamePane.tileSize * 24;
+        worldX = gamePane.getTileSize() * 24;
+        worldY = gamePane.getTileSize() * 24;
         speed = 8;
         direction = "DOWN";
     }
@@ -60,7 +63,7 @@ public class Player extends Entity {
                 }
                 direction = "UP";
             } else if (keyHandler.downPressed) {
-                if (!collisionOn && worldY + speed <= gamePane.worldHeight) {
+                if (!collisionOn && worldY + speed <= gamePane.getWorldHeight()) {
                     worldY += speed;
                 }
                 direction = "DOWN";
@@ -70,7 +73,7 @@ public class Player extends Entity {
                 }
                 direction = "LEFT";
             } else if (keyHandler.rightPressed) {
-                if (!collisionOn && worldX + speed <= gamePane.worldWidth) {
+                if (!collisionOn && worldX + speed <= gamePane.getWorldWidth()) {
                     worldX += speed;
                 }
                 direction = "RIGHT";
@@ -127,7 +130,7 @@ public class Player extends Entity {
                 }
                 break;
         }
-        gc.drawImage(playerImage, screenX, screenY, gamePane.tileSize, gamePane.tileSize);
+        gc.drawImage(playerImage, screenX, screenY, gamePane.getTileSize(), gamePane.getTileSize());
     }
 
     @Override

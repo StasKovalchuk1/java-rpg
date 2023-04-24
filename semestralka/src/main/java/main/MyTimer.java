@@ -1,3 +1,5 @@
+package main;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -31,8 +33,8 @@ public class MyTimer extends AnimationTimer {
     }
 
     private void renderMap(GraphicsContext gc) {
-        gc.clearRect(0, 0, gamePane.worldWidth, gamePane.worldHeight);
+        gc.clearRect(0, 0, gamePane.getWorldWidth(), gamePane.getWorldHeight());
         gc.setFill(Color.rgb(111, 175, 242));
-        gc.fillRect(0, 0, gamePane.screenWidth, gamePane.screenHeight);
+        gc.fillRect(0, 0, gamePane.getScreenWidth(), gamePane.getScreenHeight());
     }
 }

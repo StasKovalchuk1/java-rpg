@@ -1,16 +1,36 @@
+package tiles;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import main.GamePane;
+
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class TileManager {
-    GamePane gamePane;
-    Tile[] tiles;
-    int[][] mapTileNumbers;
-    String tileNumFile = "maps/tileNum.txt";
-    File tilesFile = new File(getClass().getResource(tileNumFile).getFile());
-    String mapFileName = "maps/map1.txt";
-    File mapFile = new File(getClass().getResource(mapFileName).getFile());
+    private GamePane gamePane;
+    private Tile[] tiles;
+    private int[][] mapTileNumbers;
+    private String tileNumFile = "maps/tileNum.txt";
+    private URL resourceToTiles = getClass().getClassLoader().getResource(tileNumFile);
+    private File tilesFile;
+    private File mapFile;
+    private String mapFileName = "maps/map1.txt";
+    private URL resourceToMap = getClass().getClassLoader().getResource(mapFileName);
+
+    {
+        try {
+            tilesFile = new File(resourceToTiles.toURI());
+            mapFile = new File(resourceToMap.toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int[][] getMapTileNumbers(){return mapTileNumbers;}
+    public Tile[] getTilesList(){return tiles;}
 
     public TileManager(GamePane gamePane) {
         this.gamePane = gamePane;
@@ -19,12 +39,12 @@ public class TileManager {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        mapTileNumbers = new int[gamePane.maxWorldRow][gamePane.maxWorldCol];
+        mapTileNumbers = new int[gamePane.getMaxWorldRow()][gamePane.getMaxWorldCol()];
         fillMap(mapFile);
     }
-
     private void getTiles() throws IOException {
         FileReader fileReader = new FileReader(tilesFile);
+//        InputStreamReader fileReader = new InputStreamReader(tilesFile);
         BufferedReader reader = new BufferedReader(fileReader);
         String line = reader.readLine();
         int tileCount = Integer.parseInt(line);
@@ -48,6 +68,7 @@ public class TileManager {
     private void fillMap(File file) {
         try {
             FileReader fileReader = new FileReader(file);
+//            InputStreamReader fileReader = new InputStreamReader(mapFile);
             BufferedReader reader = new BufferedReader(fileReader);
             for (int row = 0; row < mapTileNumbers.length; row++) {
                 String line = reader.readLine();
@@ -65,18 +86,18 @@ public class TileManager {
     }
 
     public void draw(GraphicsContext gc) {
-        for (int row = 0; row < gamePane.maxWorldRow; row++) {
-            for (int col = 0; col < gamePane.maxWorldCol; col++) {
+        for (int row = 0; row < gamePane.getMaxWorldRow(); row++) {
+            for (int col = 0; col < gamePane.getMaxWorldCol(); col++) {
                 int index = mapTileNumbers[row][col];
-                int worldX = col * gamePane.tileSize;
-                int worldY = row * gamePane.tileSize;
+                int worldX = col * gamePane.getTileSize();
+                int worldY = row * gamePane.getTileSize();
                 // set where we should print title regarding the hero
-                int screenX = worldX - gamePane.player.worldX + gamePane.player.screenX;
-                int screenY = worldY - gamePane.player.worldY + gamePane.player.screenY;
+                int screenX = worldX - gamePane.player.getWorldX() + gamePane.player.screenX;
+                int screenY = worldY - gamePane.player.getWorldY() + gamePane.player.screenY;
                 // print only tiles which are on the screen
-                if ((screenX + gamePane.tileSize >= 0 && screenX - gamePane.tileSize <= gamePane.screenWidth) &&
-                        (screenY + gamePane.tileSize >= 0 && screenY - gamePane.tileSize <= gamePane.screenHeight)) {
-                    gc.drawImage(tiles[index].image, screenX, screenY, gamePane.tileSize, gamePane.tileSize);
+                if ((screenX + gamePane.getTileSize() >= 0 && screenX - gamePane.getTileSize() <= gamePane.getScreenWidth()) &&
+                        (screenY + gamePane.getTileSize() >= 0 && screenY - gamePane.getTileSize() <= gamePane.getScreenHeight())) {
+                    gc.drawImage(tiles[index].image, screenX, screenY, gamePane.getTileSize(), gamePane.getTileSize());
                 }
             }
         }

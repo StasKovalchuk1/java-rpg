@@ -1,4 +1,7 @@
+package entities;
 
+import items.Chest;
+import main.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -6,6 +9,7 @@ public class Enemy extends Entity {
     GamePane gamePane;
     Image enemyImage;
     int radius;
+    Chest chest;
 
     public Enemy(GamePane gamePane) {
         this.gamePane = gamePane;
@@ -25,11 +29,12 @@ public class Enemy extends Entity {
     }
 
     private void setDefaultValues() {
-        worldX = 1872;
-        worldY = 1872;
+        chest = (Chest) gamePane.itemManager.getAllItems().get("chest");
+        worldX = chest.getWorldX() - gamePane.getTileSize();
+        worldY = chest.getWorldY() - gamePane.getTileSize();
         speed = 1;
         direction = "RIGHT";
-        radius = 2 * gamePane.tileSize;
+        radius = 2 * gamePane.getTileSize();
     }
 
     @Override
@@ -41,7 +46,7 @@ public class Enemy extends Entity {
                 radius -= speed;
                 if (radius <= 0){
                     direction = "RIGHT";
-                    radius = 2 * gamePane.tileSize;
+                    radius = 2 * gamePane.getTileSize();
                 }
                 break;
             case "DOWN":
@@ -49,7 +54,7 @@ public class Enemy extends Entity {
                 radius -= speed;
                 if (radius <= 0){
                     direction = "LEFT";
-                    radius = 2 * gamePane.tileSize;
+                    radius = 2 * gamePane.getTileSize();
                 }
                 break;
             case "LEFT":
@@ -57,7 +62,7 @@ public class Enemy extends Entity {
                 radius -= speed;
                 if (radius <= 0){
                     direction = "UP";
-                    radius = 2 * gamePane.tileSize;
+                    radius = 2 * gamePane.getTileSize();
                 }
                 break;
             case "RIGHT":
@@ -65,7 +70,7 @@ public class Enemy extends Entity {
                 radius -= speed;
                 if (radius <= 0){
                     direction = "DOWN";
-                    radius = 2 * gamePane.tileSize;
+                    radius = 2 * gamePane.getTileSize();
                 }
                 break;
         }
@@ -109,9 +114,9 @@ public class Enemy extends Entity {
     public void draw(GraphicsContext gc){
         int screenX = worldX - gamePane.player.worldX + gamePane.player.screenX;
         int screenY = worldY - gamePane.player.worldY + gamePane.player.screenY;
-        if ((screenX + gamePane.tileSize >= 0 && screenX - gamePane.tileSize <= gamePane.screenWidth) &&
-                (screenY + gamePane.tileSize >= 0 && screenY - gamePane.tileSize <= gamePane.screenHeight)){
-            gc.drawImage(enemyImage, screenX, screenY, gamePane.tileSize, gamePane.tileSize);
+        if ((screenX + gamePane.getTileSize() >= 0 && screenX - gamePane.getTileSize() <= gamePane.getScreenWidth()) &&
+                (screenY + gamePane.getTileSize() >= 0 && screenY - gamePane.getTileSize() <= gamePane.getScreenHeight())){
+            gc.drawImage(enemyImage, screenX, screenY, gamePane.getTileSize(), gamePane.getTileSize());
         }
     }
 
