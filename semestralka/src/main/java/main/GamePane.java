@@ -5,6 +5,8 @@ import items.ItemManager;
 import javafx.scene.canvas.Canvas;
 import tiles.*;
 
+import java.io.IOException;
+
 public class GamePane extends Canvas{
     //SCREEN
     private final int originalTile = 16;
@@ -37,10 +39,10 @@ public class GamePane extends Canvas{
     public ItemManager itemManager = new ItemManager(this);
     public Inventory inventory = new Inventory(this);
     public Player player = new Player(this, keyHandler);
-    public Enemy enemy = new Enemy(this);
+    public EnemiesList enemiesList = new EnemiesList(this);
     public CollisionCheck collisionCheck = new CollisionCheck(this);
 
-    public GamePane() {
+    public GamePane() throws IOException {
         setWidth(screenWidth);
         setHeight(screenHeight);
         this.setOnKeyPressed(keyHandler);

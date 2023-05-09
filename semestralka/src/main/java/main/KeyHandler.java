@@ -3,10 +3,11 @@ package main;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
+/**
+ * This class is for handling key events
+ */
 public class KeyHandler implements EventHandler<KeyEvent> {
-
-    public boolean upPressed, downPressed, leftPressed, rightPressed, inventoryPressed, chestPressed;
-
+    public boolean upPressed, downPressed, leftPressed, rightPressed, inventoryPressed, chestPressed, attackPressed, defendPressed;
     @Override
     public void handle(KeyEvent keyEvent) {
         if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
@@ -30,6 +31,12 @@ public class KeyHandler implements EventHandler<KeyEvent> {
                 case L:
                     chestPressed = true;
                     break;
+                case N:
+                    attackPressed = true;
+                    break;
+                case M:
+                    defendPressed = true;
+                    break;
             }
         } else if (keyEvent.getEventType() == KeyEvent.KEY_RELEASED){
             switch (keyEvent.getCode()){
@@ -47,6 +54,12 @@ public class KeyHandler implements EventHandler<KeyEvent> {
                     break;
                 case L:
                     chestPressed = false;
+                    break;
+                case N:
+                    attackPressed = false;
+                    break;
+                case M:
+                    defendPressed = false;
                     break;
             }
         }

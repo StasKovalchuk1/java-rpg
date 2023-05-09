@@ -7,13 +7,9 @@ import entities.*;
 import tiles.*;
 
 public abstract class Item {
-
-
     private boolean isOpened;
-
     private Image image;
     private String name;
-
     private boolean isTaken = false;
     private boolean insideChest;
     private int worldX, worldY;

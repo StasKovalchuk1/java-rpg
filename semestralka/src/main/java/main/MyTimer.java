@@ -18,7 +18,7 @@ public class MyTimer extends AnimationTimer {
     }
 
     private void update() {
-        gamePane.enemy.update();
+        gamePane.enemiesList.updateEnemies();
         gamePane.player.update();
     }
 
@@ -27,7 +27,7 @@ public class MyTimer extends AnimationTimer {
         renderMap(gc);
         gamePane.tileManager.draw(gc);
         gamePane.itemManager.draw(gc);
-        gamePane.enemy.draw(gc);
+        gamePane.enemiesList.drawEnemies(gc);
         gamePane.inventory.draw(gc);
         gamePane.player.draw(gc);
     }

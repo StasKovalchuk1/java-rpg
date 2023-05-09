@@ -17,15 +17,22 @@ import java.util.ArrayList;
 
 public class Inventory {
 
-    public ArrayList<Item> list = new ArrayList<>();
+    private ArrayList<Item> list = new ArrayList<>();
+    public ArrayList<Item> getInventory() {
+        return list;
+    }
+    private int maxListSize = 15;
+    public int getMaxListSize() {
+        return maxListSize;
+    }
     private GamePane gamePane;
-
+    private Boolean inventoryIsFull = false;
     private int borderWidth = 5;
     private int fontSize = 18;
     private String title = "My Inventory";
     private Font titleFont = new Font("Tiempos Text", fontSize);
 
-    private String inventoryFileName = "hero1/inventory.txt";
+    private String inventoryFileName = "hero/inventory.txt";
     private URL resource = getClass().getClassLoader().getResource(inventoryFileName);
     private File inventoryFile;
     {
@@ -79,16 +86,45 @@ public class Inventory {
             gc.fillText(title, 75, 23);
             int row = 0;
             int col = 0;
-            for (int i = 0; i < list.size(); i++) {
+            int i = 0;
+            while (i < list.size()){
                 int inventoryScreenX = col * gamePane.getTileSize() + borderWidth * 2;
                 int inventoryScreenY = row * gamePane.getTileSize() + borderWidth * 2 + fontSize;
                 gc.drawImage(list.get(i).getImage(), inventoryScreenX, inventoryScreenY, gamePane.getTileSize(), gamePane.getTileSize());
                 col++;
+                i++;
                 if (col == 5) {
                     row++;
                     col = 0;
                 }
             }
         }
+    }
+    public Boolean checkSwordInList(){
+        for (Item item : list){
+            if (item instanceof Sword) return true;
+        }
+        return false;
+    }
+
+    public Boolean checkChestInList(){
+        for (Item item : list){
+            if (item instanceof Chest) return true;
+        }
+        return false;
+    }
+
+    public Boolean checkKeyInList(){
+        for (Item item : list){
+            if (item instanceof Key) return true;
+        }
+        return false;
+    }
+
+    public Boolean checkShieldInList(){
+        for (Item item : list){
+            if (item instanceof Shield) return true;
+        }
+        return false;
     }
 }

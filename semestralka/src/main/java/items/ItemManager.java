@@ -7,13 +7,16 @@ import javafx.scene.image.Image;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ItemManager {
     GamePane gamePane;
-    private HashMap<String, Item> items = new HashMap<>();
-    public HashMap<String, Item> getAllItems(){return items;}
-
+//    private HashMap<String, Item> items = new HashMap<>();
+    private List<Item> items = new ArrayList<>();
+//    public HashMap<String, Item> getAllItems(){return items;}
+    public List<Item> getAllItems(){return items;}
     private String itemsFileName = "items/itemsInit.txt";
     private URL resource = getClass().getClassLoader().getResource(itemsFileName);
     private File itemsFile;
@@ -34,6 +37,10 @@ public class ItemManager {
         }
     }
 
+    /**
+     * Gets items and adds them to the hashmap
+     * @throws IOException
+     */
     private void getItems() throws IOException {
         FileReader fileReader = new FileReader(itemsFile);
         BufferedReader reader = new BufferedReader(fileReader);
@@ -42,45 +49,52 @@ public class ItemManager {
             String[] arrLine = line.split(" ");
             switch (arrLine[0]) {
                 case "key":
-                    items.put(arrLine[0], new Key(arrLine[0], new Image("items/key.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
+                    items.add(new Key(arrLine[0], new Image("items/key.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
                             Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
                     break;
                 case "sword":
-                    items.put(arrLine[0], new Sword(arrLine[0], new Image("items/sword.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
+                    items.add(new Sword(arrLine[0], new Image("items/sword.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
                             Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
                     break;
                 case "chest":
-                    items.put(arrLine[0], new Chest(arrLine[0], new Image("items/chest.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
+                    items.add(new Chest(arrLine[0], new Image("items/chest.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
                             Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
                     break;
                 case "shield":
-                    items.put(arrLine[0], new Shield(arrLine[0], new Image("items/shield.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
+                    items.add(new Shield(arrLine[0], new Image("items/shield.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
                             Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
                     break;
             }
         }
-        Chest chest = (Chest) items.get("chest");
-        for (String i : items.keySet()) {
-            if (items.get(i).getInsideChest()) {
-                chest.inside.add(items.get(i));
+        Chest chest = null;
+        for (Item item : items) {
+            if (item instanceof Chest) chest = (Chest) item;
+        }
+        for (Item item : items) {
+            if (item.getInsideChest() && chest != null) {
+                chest.inside.add(item);
             }
         }
     }
 
+    /**
+     * Draw all items on the canvas
+     * @param gc
+     */
     public void draw(GraphicsContext gc) {
-        for (String i : items.keySet()) {
-            if (items.get(i).getWorldX() >= 0 && items.get(i).getWorldY() >= 0) {
+        for (Item item : items) {
+            if (item.getWorldX() >= 0 && item.getWorldY() >= 0) {
                 // set where we should print item regarding the hero
-                int screenX = items.get(i).getWorldX() - gamePane.player.getWorldX() + gamePane.player.screenX;
-                int screenY = items.get(i).getWorldY() - gamePane.player.getWorldY() + gamePane.player.screenY;
+                int screenX = item.getWorldX() - gamePane.player.getWorldX() + gamePane.player.screenX;
+                int screenY = item.getWorldY() - gamePane.player.getWorldY() + gamePane.player.screenY;
                 // print only items which are on the screen
                 if ((screenX + gamePane.getTileSize() >= 0 && screenX - gamePane.getTileSize() <= gamePane.getScreenWidth()) &&
                         (screenY + gamePane.getTileSize() >= 0 && screenY - gamePane.getTileSize() <= gamePane.getScreenHeight())) {
-                    if (!items.get(i).getIsTaken()) {
-                        if (i.equals("chest") && items.get(i).getIsOpened()) {
-                            items.get(i).setImage(new Image("items/chest_opened.png"));
+                    if (!item.getIsTaken()) {
+                        if ((item instanceof Chest) && item.getIsOpened()) {
+                            item.setImage(new Image("items/chest_opened.png"));
                         }
-                        gc.drawImage(items.get(i).getImage(), screenX, screenY, gamePane.getTileSize(), gamePane.getTileSize());
+                        gc.drawImage(item.getImage(), screenX, screenY, gamePane.getTileSize(), gamePane.getTileSize());
                     }
                 }
             }

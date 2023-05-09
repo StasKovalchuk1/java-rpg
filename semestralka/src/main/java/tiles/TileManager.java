@@ -9,6 +9,11 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+/**
+ * This class is for reading tiles,
+ * filling them to the map
+ * and drawing it on canvas
+ */
 public class TileManager {
     private GamePane gamePane;
     private Tile[] tiles;
@@ -42,9 +47,13 @@ public class TileManager {
         mapTileNumbers = new int[gamePane.getMaxWorldRow()][gamePane.getMaxWorldCol()];
         fillMap(mapFile);
     }
+
+    /**
+     * Gets tiles and adds them to the array
+     * @throws IOException
+     */
     private void getTiles() throws IOException {
         FileReader fileReader = new FileReader(tilesFile);
-//        InputStreamReader fileReader = new InputStreamReader(tilesFile);
         BufferedReader reader = new BufferedReader(fileReader);
         String line = reader.readLine();
         int tileCount = Integer.parseInt(line);
@@ -65,6 +74,10 @@ public class TileManager {
         }
     }
 
+    /**
+     * Fills a two-dimensional array of the map with tiles
+     * @param file Your file with map
+     */
     private void fillMap(File file) {
         try {
             FileReader fileReader = new FileReader(file);
@@ -85,6 +98,10 @@ public class TileManager {
         }
     }
 
+    /**
+     * Draws the map on canvas
+     * @param gc
+     */
     public void draw(GraphicsContext gc) {
         for (int row = 0; row < gamePane.getMaxWorldRow(); row++) {
             for (int col = 0; col < gamePane.getMaxWorldCol(); col++) {
