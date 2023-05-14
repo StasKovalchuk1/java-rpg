@@ -53,7 +53,7 @@ public class Inventory {
         String line;
         while ((line = reader.readLine()) != null) {
             String[] arrLine = line.split(" ");
-            switch (arrLine[1]) {
+            switch (arrLine[0]) {
                 case "key":
                     list.add(new Key(arrLine[0], new Image("items/key.png"),
                             Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),

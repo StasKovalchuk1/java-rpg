@@ -22,17 +22,15 @@ public class CollisionCheck {
      * @param entity Your entity that you check on collision
      */
     public void checkTile(Entity entity) {
-        int rectLeftX = (int) entity.getRectangle().getX();
-        int rectRightX = (int) (entity.getRectangle().getX() + entity.getRectangle().getWidth());
-        int rectTopY = (int) entity.getRectangle().getY();
-        int rectBottomY = (int) (entity.getRectangle().getY() + entity.getRectangle().getHeight());
+        int rectLeftX = (int) entity.getHitbox().getX();
+        int rectRightX = (int) (entity.getHitbox().getX() + entity.getHitbox().getWidth());
+        int rectTopY = (int) entity.getHitbox().getY();
+        int rectBottomY = (int) (entity.getHitbox().getY() + entity.getHitbox().getHeight());
 
         int rowOfTop = rectTopY / gamePane.getTileSize();
         int colOfLeft = rectLeftX / gamePane.getTileSize();
         int colOfRight = rectRightX / gamePane.getTileSize();
         int rowOfBottom = rectBottomY/ gamePane.getTileSize();
-
-//        Chest chest = (Chest) gamePane.itemManager.getAllItems().get("chest");
 
         try {
             switch (entity.getDirection()) {
@@ -95,7 +93,7 @@ public class CollisionCheck {
     public void checkItem(Entity entity) {
         for (Item item : gamePane.itemManager.getAllItems()) {
             // if we have collision with an item then we take it
-            if ((entity.getRectangle().intersects(item.getWorldX(), item.getWorldY(), gamePane.getTileSize(), gamePane.getTileSize()))
+            if ((entity.getHitbox().intersects(item.getWorldX(), item.getWorldY(), gamePane.getTileSize(), gamePane.getTileSize()))
                 && !item.getIsTaken() && (gamePane.inventory.getInventory().size() < gamePane.inventory.getMaxListSize())){
                     if (!item.getName().equals("chest")){
                         item.setIsTaken(true);
@@ -111,7 +109,7 @@ public class CollisionCheck {
      */
     public void checkChest(Entity entity) {
         if (chest != null) {
-            if (entity.getRectangle().intersects(chest.getWorldX() - gamePane.getTileSize() * 0.5, chest.getWorldY() - gamePane.getTileSize() * 0.5, gamePane.getTileSize() * 2, gamePane.getTileSize() * 2)
+            if (entity.getHitbox().intersects(chest.getWorldX() - gamePane.getTileSize() * 0.5, chest.getWorldY() - gamePane.getTileSize() * 0.5, gamePane.getTileSize() * 2, gamePane.getTileSize() * 2)
                     && !chest.getIsOpened() && gamePane.keyHandler.chestPressed) {
                 for (Item item : gamePane.inventory.getInventory()) {
                     if (item.getName().equals("key")) {
@@ -133,31 +131,10 @@ public class CollisionCheck {
      * @param entityGetHit The entity that will be attacked
      */
     public void checkHit(Entity entityAttack, Entity entityGetHit) {
-        switch (entityAttack.getDirection()){
-            case "UP":
-                entityAttack.getRectangle().setY(entityAttack.getRectangle().getY() - gamePane.getTileSize() - 16);
-                if (entityAttack.getRectangle().intersects(entityGetHit.getRectangle().getBoundsInLocal())){
-                    entityGetHit.getHitProcess();
-                }
-                break;
-            case "DOWN":
-                entityAttack.getRectangle().setY(entityAttack.getRectangle().getY() + entityAttack.getRectangle().getHeight());
-                if (entityAttack.getRectangle().intersects(entityGetHit.getRectangle().getBoundsInLocal())){
-                    entityGetHit.getHitProcess();
-                }
-                break;
-            case "LEFT":
-                entityAttack.getRectangle().setX(entityAttack.getRectangle().getX() - gamePane.getTileSize());
-                if (entityAttack.getRectangle().intersects(entityGetHit.getRectangle().getBoundsInLocal())){
-                    entityGetHit.getHitProcess();
-                }
-                break;
-            case "RIGHT":
-                entityAttack.getRectangle().setX(entityAttack.getRectangle().getX() + gamePane.getTileSize());
-                if (entityAttack.getRectangle().intersects(entityGetHit.getRectangle().getBoundsInLocal())){
-                    entityGetHit.getHitProcess();
-                }
-                break;
+        if (entityGetHit.getAlive() && entityAttack.getAlive()) {
+            if (entityAttack.getAttackHitbox().intersects(entityGetHit.getHitbox().getBoundsInLocal())) {
+                entityGetHit.getHitProcess();
+            } else entityGetHit.setHitCounter(0);
         }
     }
 
@@ -167,31 +144,33 @@ public class CollisionCheck {
      * @param target Your second entity
      */
     public void checkEntity(Entity entity, Entity target) {
-        switch (entity.getDirection()){
-            case "UP":
-                entity.getRectangle().setY(entity.getRectangle().getY() - entity.getSpeed());
-                if (entity.getRectangle().intersects(target.getRectangle().getBoundsInLocal())){
-                    entity.setCollisionOn(true);
-                }
-                break;
-            case "DOWN":
-                entity.getRectangle().setY(entity.getRectangle().getY() + entity.getSpeed());
-                if (entity.getRectangle().intersects(target.getRectangle().getBoundsInLocal())){
-                    entity.setCollisionOn(true);
-                }
-                break;
-            case "LEFT":
-                entity.getRectangle().setX(entity.getRectangle().getX() - entity.getSpeed());
-                if (entity.getRectangle().intersects(target.getRectangle().getBoundsInLocal())){
-                    entity.setCollisionOn(true);
-                }
-                break;
-            case "RIGHT":
-                entity.getRectangle().setX(entity.getRectangle().getX() + entity.getSpeed());
-                if (entity.getRectangle().intersects(target.getRectangle().getBoundsInLocal())){
-                    entity.setCollisionOn(true);
-                }
-                break;
+        if (target.getAlive()){
+            switch (entity.getDirection()){
+                case "UP":
+                    entity.getHitbox().setY(entity.getHitbox().getY() - entity.getSpeed());
+                    if (entity.getHitbox().intersects(target.getHitbox().getBoundsInLocal())){
+                        entity.setCollisionOn(true);
+                    }
+                    break;
+                case "DOWN":
+                    entity.getHitbox().setY(entity.getHitbox().getY() + entity.getSpeed());
+                    if (entity.getHitbox().intersects(target.getHitbox().getBoundsInLocal())){
+                        entity.setCollisionOn(true);
+                    }
+                    break;
+                case "LEFT":
+                    entity.getHitbox().setX(entity.getHitbox().getX() - entity.getSpeed());
+                    if (entity.getHitbox().intersects(target.getHitbox().getBoundsInLocal())){
+                        entity.setCollisionOn(true);
+                    }
+                    break;
+                case "RIGHT":
+                    entity.getHitbox().setX(entity.getHitbox().getX() + entity.getSpeed());
+                    if (entity.getHitbox().intersects(target.getHitbox().getBoundsInLocal())){
+                        entity.setCollisionOn(true);
+                    }
+                    break;
+            }
         }
     }
 

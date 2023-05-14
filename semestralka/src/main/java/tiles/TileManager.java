@@ -3,10 +3,10 @@ package tiles;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import main.GamePane;
+import main.MyLogger;
 
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -29,8 +29,9 @@ public class TileManager {
         try {
             tilesFile = new File(resourceToTiles.toURI());
             mapFile = new File(resourceToMap.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            MyLogger.getMyLogger().severe("Exception ::" + e);
+//            throw new RuntimeException(e);
         }
     }
 
@@ -53,24 +54,26 @@ public class TileManager {
      * @throws IOException
      */
     private void getTiles() throws IOException {
+        MyLogger.getMyLogger().info("Loading the tiles");
         FileReader fileReader = new FileReader(tilesFile);
         BufferedReader reader = new BufferedReader(fileReader);
+        try {
         String line = reader.readLine();
         int tileCount = Integer.parseInt(line);
         tiles = new Tile[tileCount];
-        try {
-            for (int i = 0; i < tileCount; i++) {
-                line = reader.readLine();
-                String[] arrLine = line.split(" ");
-                tiles[i] = new Tile();
-                tiles[i].image = new Image(arrLine[1]);
-                if (arrLine[2].equals("solid")) {
-                    tiles[i].solid = true;
-                }
+        for (int i = 0; i < tileCount; i++) {
+            line = reader.readLine();
+            String[] arrLine = line.split(" ");
+            tiles[i] = new Tile();
+            tiles[i].image = new Image(arrLine[1]);
+            if (arrLine[2].equals("solid")) {
+                tiles[i].solid = true;
             }
+        }
+        MyLogger.getMyLogger().info("Tiles are loaded");
         } catch (NumberFormatException e) {
-            e.printStackTrace();
-            System.exit(1);
+            MyLogger.getMyLogger().severe("Exception ::" + e);
+//            System.exit(1);
         }
     }
 
@@ -80,8 +83,8 @@ public class TileManager {
      */
     private void fillMap(File file) {
         try {
+            MyLogger.getMyLogger().info("Loading the map");
             FileReader fileReader = new FileReader(file);
-//            InputStreamReader fileReader = new InputStreamReader(mapFile);
             BufferedReader reader = new BufferedReader(fileReader);
             for (int row = 0; row < mapTileNumbers.length; row++) {
                 String line = reader.readLine();
@@ -93,8 +96,9 @@ public class TileManager {
                     }
                 }
             }
+            MyLogger.getMyLogger().info("Map is loaded");
         } catch (Exception e) {
-            e.printStackTrace();
+            MyLogger.getMyLogger().severe("Exception ::" + e);
         }
     }
 

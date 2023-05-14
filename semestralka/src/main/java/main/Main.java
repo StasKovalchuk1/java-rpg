@@ -6,11 +6,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 
 public class Main extends Application{
 
-    private final GamePane gamePane = new GamePane();
+    private GamePane gamePane;
     private Group root;
 
     public Main() throws IOException {
@@ -22,6 +23,8 @@ public class Main extends Application{
 
     @Override
     public void start(Stage stage) throws Exception {
+        MyLogger.init();
+        gamePane = new GamePane();
         stage.setTitle("Nefor boy");
 
         root = new Group(gamePane);

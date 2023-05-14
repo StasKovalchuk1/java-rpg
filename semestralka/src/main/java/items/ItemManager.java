@@ -13,9 +13,7 @@ import java.util.List;
 
 public class ItemManager {
     GamePane gamePane;
-//    private HashMap<String, Item> items = new HashMap<>();
     private List<Item> items = new ArrayList<>();
-//    public HashMap<String, Item> getAllItems(){return items;}
     public List<Item> getAllItems(){return items;}
     private String itemsFileName = "items/itemsInit.txt";
     private URL resource = getClass().getClassLoader().getResource(itemsFileName);
@@ -24,7 +22,7 @@ public class ItemManager {
         try {
             itemsFile = new File(resource.toURI());
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            MyLogger.getMyLogger().severe("Exception ::" + e);
         }
     }
 
@@ -42,38 +40,44 @@ public class ItemManager {
      * @throws IOException
      */
     private void getItems() throws IOException {
+        MyLogger.getMyLogger().info("Loading the items");
         FileReader fileReader = new FileReader(itemsFile);
         BufferedReader reader = new BufferedReader(fileReader);
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] arrLine = line.split(" ");
-            switch (arrLine[0]) {
-                case "key":
-                    items.add(new Key(arrLine[0], new Image("items/key.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
-                            Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
-                    break;
-                case "sword":
-                    items.add(new Sword(arrLine[0], new Image("items/sword.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
-                            Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
-                    break;
-                case "chest":
-                    items.add(new Chest(arrLine[0], new Image("items/chest.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
-                            Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
-                    break;
-                case "shield":
-                    items.add(new Shield(arrLine[0], new Image("items/shield.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
-                            Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
-                    break;
+        try {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] arrLine = line.split(" ");
+                switch (arrLine[0]) {
+                    case "key":
+                        items.add(new Key(arrLine[0], new Image("items/key.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
+                                Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
+                        break;
+                    case "sword":
+                        items.add(new Sword(arrLine[0], new Image("items/sword.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
+                                Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
+                        break;
+                    case "chest":
+                        items.add(new Chest(arrLine[0], new Image("items/chest.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
+                                Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
+                        break;
+                    case "shield":
+                        items.add(new Shield(arrLine[0], new Image("items/shield.png"), Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
+                                Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), Boolean.parseBoolean(arrLine[3])));
+                        break;
+                }
             }
-        }
-        Chest chest = null;
-        for (Item item : items) {
-            if (item instanceof Chest) chest = (Chest) item;
-        }
-        for (Item item : items) {
-            if (item.getInsideChest() && chest != null) {
-                chest.inside.add(item);
+            Chest chest = null;
+            for (Item item : items) {
+                if (item instanceof Chest) chest = (Chest) item;
             }
+            for (Item item : items) {
+                if (item.getInsideChest() && chest != null) {
+                    chest.inside.add(item);
+                }
+            }
+            MyLogger.getMyLogger().info("Tiles are loaded");
+        } catch (Exception e){
+            MyLogger.getMyLogger().severe("Exception ::" + e);
         }
     }
 

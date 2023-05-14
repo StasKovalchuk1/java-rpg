@@ -42,7 +42,11 @@ public class EnemiesList {
         String line;
         while ((line = reader.readLine()) != null) {
             String[] arrLine = line.split(" ");
-            enemiesList.add(new Enemy(gamePane, Integer.parseInt(arrLine[0]), Integer.parseInt(arrLine[1])));
+            if (arrLine[2].equals("ork")){
+                enemiesList.add(new Ork(gamePane, Integer.parseInt(arrLine[0]), Integer.parseInt(arrLine[1])));
+            } else {
+                enemiesList.add(new Boss(gamePane, Integer.parseInt(arrLine[0]), Integer.parseInt(arrLine[1])));
+            }
         }
     }
 
@@ -51,7 +55,7 @@ public class EnemiesList {
      * @param gc
      */
     public void drawEnemies(GraphicsContext gc) {
-        for (Entity enemy : enemiesList){
+        for (Enemy enemy : enemiesList){
             enemy.draw(gc);
         }
     }
@@ -60,7 +64,7 @@ public class EnemiesList {
      * Updates the values of each enemy
      */
     public void updateEnemies() {
-        for (Entity enemy : enemiesList){
+        for (Enemy enemy : enemiesList){
             enemy.update();
         }
     }

@@ -1,5 +1,6 @@
 package entities;
 
+import javafx.scene.paint.Color;
 import main.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -10,14 +11,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public class Player extends Entity {
-    private GamePane gamePane;
-    private KeyHandler keyHandler;
-    private Image playerImage;
+    private final KeyHandler keyHandler;
     public final int screenX;
     public final int screenY;
-    private String heroFileName = "hero/hero.txt";
-    private URL resourceToEnemies = getClass().getClassLoader().getResource(heroFileName);
-    private File heroFile;
+    private final String heroFileName = "hero/hero.txt";
+    private final URL resourceToEnemies = getClass().getClassLoader().getResource(heroFileName);
+    private final File heroFile;
     {
         try {
             heroFile = new File(resourceToEnemies.toURI());
@@ -27,13 +26,14 @@ public class Player extends Entity {
     }
 
     public Player(GamePane gamePane, KeyHandler keyHandler) throws IOException {
-        this.gamePane = gamePane;
+        setGamePane(gamePane);
         this.keyHandler = keyHandler;
         screenX = gamePane.getScreenWidth() / 2 - (gamePane.getTileSize() / 2);
         screenY = gamePane.getScreenHeight() / 2 - (gamePane.getTileSize() / 2);
         setDefaultValues();
         getPlayerImage();
-        rectangle = new Rectangle(worldX + 8, worldY + 16, 32, 30);
+        setHitbox(new Rectangle(getWorldX() + 8, getWorldY() + 16, 32, 32));
+        setAttackHitbox(new Rectangle(getWorldX() + 8, getWorldY() + 16, 32, 32));
         try {
             gamePane.inventory.setInventory();
         } catch (IOException e) {
@@ -51,12 +51,12 @@ public class Player extends Entity {
         String line;
         while ((line = reader.readLine()) != null) {
             String[] arrLine = line.split(" ");
-            worldX = gamePane.getTileSize() * Integer.parseInt(arrLine[0]);
-            worldY = gamePane.getTileSize() * Integer.parseInt(arrLine[0]);
+            setWorldX(getGamePane().getTileSize() * Integer.parseInt(arrLine[0]));
+            setWorldY(getGamePane().getTileSize() * Integer.parseInt(arrLine[0]));
         }
-        speed = 5;
-        direction = "DOWN";
-        lives = 3;
+        setSpeed(4);
+        setDirection("DOWN");
+        setLives(5);
     }
 
     /**
@@ -81,222 +81,119 @@ public class Player extends Entity {
         attackRight2 = new Image("hero/attack_right_2.png");
     }
 
-    /**
-     * Update all player values
-     */
     @Override
     public void update() {
-        rectangle.setX(worldX + 8);
-        rectangle.setY(worldY + 16);
+        handleMoving();
+        getHitbox().setX(getWorldX() + 8);
+        getHitbox().setY(getWorldY() + 8);
+        interactionWithObjects();
+//        System.out.println(getHitbox().getX());
+//        System.out.println(getHitbox().getY());
+//        System.out.println("-----------------");
+    }
 
+    private void handleMoving(){
         if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed
                 || keyHandler.rightPressed) {
-            collisionOn = false;
-            gamePane.collisionCheck.checkTile(this);
-            gamePane.collisionCheck.checkItem(this);
-            for (Enemy enemy : gamePane.enemiesList.getEnemiesList()){
-                gamePane.collisionCheck.checkEntity(this, enemy);
-            }
             if (keyHandler.upPressed) {
-                if (!collisionOn && worldY - speed >= 0) {
-                    worldY -= speed;
-                }
-                direction = "UP";
+                setDirection("UP");
             } else if (keyHandler.downPressed) {
-                if (!collisionOn && worldY + speed <= gamePane.getWorldHeight()) {
-                    worldY += speed;
-                }
-                direction = "DOWN";
+                setDirection("DOWN");
             } else if (keyHandler.leftPressed) {
-                if (!collisionOn && worldX - speed >= 0) {
-                    worldX -= speed;
-                }
-                direction = "LEFT";
-            } else if (keyHandler.rightPressed) {
-                if (!collisionOn && worldX + speed <= gamePane.getWorldWidth()) {
-                    worldX += speed;
-                }
-                direction = "RIGHT";
+                setDirection("LEFT");
+            } else {
+                setDirection("RIGHT");
             }
 
-            spriteCounter++;
-            if (spriteCounter > 10) {
-                if (spriteNum == 1) {
-                    spriteNum = 2;
-                } else {
-                    spriteNum = 1;
-                }
-                spriteCounter = 0;
-            }
+            checkCollisions();
+            changeCoordinates();
+            setSpritesNum();
         }
+    }
 
+    @Override
+    public void checkCollisions(){
+        setCollisionOn(false);
+        getGamePane().collisionCheck.checkTile(this);
+        getGamePane().collisionCheck.checkItem(this);
+        for (Entity entity : getGamePane().enemiesList.getEnemiesList()){
+            getGamePane().collisionCheck.checkEntity(this, entity);
+        }
+    }
+
+    /**
+     * Handle interaction with a key, sword and shield
+     */
+    public void interactionWithObjects() {
         if (keyHandler.chestPressed) {
-            gamePane.collisionCheck.checkChest(this);
+            getGamePane().collisionCheck.checkChest(this);
         }
-
-        if (keyHandler.attackPressed && gamePane.inventory.checkSwordInList()) {
-            isAttacking = true;
-            for (Enemy enemy : gamePane.enemiesList.getEnemiesList()) {
-                if (enemy.getIsAlive()){
-                    gamePane.collisionCheck.checkHit(gamePane.player, enemy);
+        if (keyHandler.attackPressed && getGamePane().inventory.checkSwordInList()) {
+            setAttacking(true);
+            getAttackHitbox().setX(getWorldX() + 8);
+            getAttackHitbox().setY(getWorldY() + 8);
+            changeAttackHitboxCoord();
+            for (Entity entity: getGamePane().enemiesList.getEnemiesList()) {
+                if (entity.getAlive()){
+                    getGamePane().collisionCheck.checkHit(this, entity);
                 }
             }
         }
     }
 
-    /**
-     * Draws hero on the canvas
-     * @param gc
-     */
     @Override
     public void draw(GraphicsContext gc) {
-        if (!isAttacking) {
-            switch (direction) {
-                case "UP":
-                    if (spriteNum == 1) {
-                        playerImage = up1;
-                    }
-                    if (spriteNum == 2) {
-                        playerImage = up2;
-                    }
-                    break;
-                case "DOWN":
-                    if (spriteNum == 1) {
-                        playerImage = down1;
-                    }
-                    if (spriteNum == 2) {
-                        playerImage = down2;
-                    }
-                    break;
-                case "LEFT":
-                    if (spriteNum == 1) {
-                        playerImage = left1;
-                    }
-                    if (spriteNum == 2) {
-                        playerImage = left2;
-                    }
-                    break;
-                case "RIGHT":
-                    if (spriteNum == 1) {
-                        playerImage = right1;
-                    }
-                    if (spriteNum == 2) {
-                        playerImage = right2;
-                    }
-                    break;
+        if (getAlive()) {
+            if (!getAttacking()) {
+                switch (getDirection()) {
+                    case "UP":
+                        if (getSpriteNum() == 1) {
+                            setEntityImage(up1);
+                        }
+                        if (getSpriteNum() == 2) {
+                            setEntityImage(up2);
+                        }
+                        break;
+                    case "DOWN":
+                        if (getSpriteNum() == 1) {
+                            setEntityImage(down1);
+                        }
+                        if (getSpriteNum() == 2) {
+                            setEntityImage(down2);
+                        }
+                        break;
+                    case "LEFT":
+                        if (getSpriteNum() == 1) {
+                            setEntityImage(left1);
+                        }
+                        if (getSpriteNum() == 2) {
+                            setEntityImage(left2);
+                        }
+                        break;
+                    case "RIGHT":
+                        if (getSpriteNum() == 1) {
+                            setEntityImage(right1);
+                        }
+                        if (getSpriteNum() == 2) {
+                            setEntityImage(right2);
+                        }
+                        break;
+                }
+                gc.drawImage(getEntityImage(), screenX, screenY, getGamePane().getTileSize(), getGamePane().getTileSize());
+            } else {
+                attack(gc, screenX, screenY);
+                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.screenX);
+                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.screenY);
+                gc.setStroke(Color.WHITE);
+                gc.setLineWidth(2);
+                gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+                gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
             }
-            gc.drawImage(playerImage, screenX, screenY, gamePane.getTileSize(), gamePane.getTileSize());
-        } else {
-            attack(gc);
-        }
-    }
-
-    /**
-     * Draws attack on the canvas
-     * @param gc
-     */
-    @Override
-    public void attack(GraphicsContext gc) {
-            switch (direction){
-                case "UP":
-                    if (attackNum == 1) {
-                        playerImage = attackUp1;
-                    }
-                    if (attackNum == 2) {
-                        playerImage = attackUp2;
-                    }
-                    break;
-                case "DOWN":
-                    if (attackNum == 1) {
-                        playerImage = attackDown1;
-                    }
-                    if (attackNum == 2) {
-                        playerImage = attackDown2;
-                    }
-                    break;
-                case "LEFT":
-                    if (attackNum == 1) {
-                        playerImage = attackLeft1;
-                    }
-                    if (attackNum == 2) {
-                        playerImage = attackLeft2;
-                    }
-                    break;
-                case "RIGHT":
-                    if (attackNum == 1) {
-                        playerImage = attackRight1;
-                    }
-                    if (attackNum == 2) {
-                        playerImage = attackRight2;
-                    }
-                    break;
-            }
-            attackingProcess();
-            drawImageAttack(gc);
-    }
-
-    /**
-     * Draws attacking sprites
-     * @param gc
-     */
-    private void drawImageAttack(GraphicsContext gc){
-        switch (direction){
-            case "UP":
-                gc.drawImage(playerImage, screenX, screenY - gamePane.getTileSize(), gamePane.getTileSize(), gamePane.getTileSize() * 2);
-                break;
-            case "DOWN":
-                gc.drawImage(playerImage, screenX, screenY, gamePane.getTileSize(), gamePane.getTileSize() * 2);
-                break;
-            case "LEFT":
-                gc.drawImage(playerImage, screenX - gamePane.getTileSize(), screenY, gamePane.getTileSize() * 2, gamePane.getTileSize());
-                break;
-            case "RIGHT":
-                gc.drawImage(playerImage, screenX, screenY, gamePane.getTileSize() * 2, gamePane.getTileSize());
-                break;
-        }
-    }
-
-    /**
-     * Control that each attack takes 25 frames
-     */
-    public void attackingProcess(){
-        attackCounter++;
-        if (attackCounter < 10){
-            attackNum = 1;
-        } else if (attackCounter >= 10 && attackCounter < 20){
-            attackNum = 2;
-        } else if (attackCounter >= 20 && attackCounter < 25){
-            attackNum = 1;
-        } else if (attackCounter >= 25) {
-            attackCounter = 0;
-            isAttacking = false;
-        }
-    }
-
-    /**
-     * Decrease lives when hero gets hit
-     */
-    @Override
-    public void getHitProcess() {
-        increaseHitCounter();
-        if (getHitCounter() > 10){
-            decreaseLives();
-            setHitCounter(0);
         }
     }
 
     @Override
     public void defend() {
 
-    }
-
-    @Override
-    public void decreaseLives() {
-        lives--;
-    }
-
-    @Override
-    public void increaseLives() {
-        lives++;
     }
 }

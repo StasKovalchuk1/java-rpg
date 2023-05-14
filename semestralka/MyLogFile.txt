@@ -1,0 +1,14 @@
+мая 14, 2023 12:40:47 PM main.MyLogger init
+INFO: Logger Initialized
+мая 14, 2023 12:40:47 PM tiles.TileManager getTiles
+INFO: Loading the tiles
+мая 14, 2023 12:40:47 PM tiles.TileManager getTiles
+INFO: Tiles are loaded
+мая 14, 2023 12:40:47 PM tiles.TileManager fillMap
+INFO: Loading the map
+мая 14, 2023 12:40:47 PM tiles.TileManager fillMap
+INFO: Map is loaded
+мая 14, 2023 12:40:47 PM items.ItemManager getItems
+INFO: Loading the items
+мая 14, 2023 12:40:47 PM items.ItemManager getItems
+INFO: Tiles are loaded
