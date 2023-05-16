@@ -89,8 +89,8 @@ public class ItemManager {
         for (Item item : items) {
             if (item.getWorldX() >= 0 && item.getWorldY() >= 0) {
                 // set where we should print item regarding the hero
-                int screenX = item.getWorldX() - gamePane.player.getWorldX() + gamePane.player.screenX;
-                int screenY = item.getWorldY() - gamePane.player.getWorldY() + gamePane.player.screenY;
+                int screenX = item.getWorldX() - gamePane.player.getWorldX() + gamePane.player.getScreenX();
+                int screenY = item.getWorldY() - gamePane.player.getWorldY() + gamePane.player.getScreenY();
                 // print only items which are on the screen
                 if ((screenX + gamePane.getTileSize() >= 0 && screenX - gamePane.getTileSize() <= gamePane.getScreenWidth()) &&
                         (screenY + gamePane.getTileSize() >= 0 && screenY - gamePane.getTileSize() <= gamePane.getScreenHeight())) {

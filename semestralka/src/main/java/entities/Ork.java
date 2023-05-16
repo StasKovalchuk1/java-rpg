@@ -46,7 +46,7 @@ public class Ork extends Enemy{
         setWorldY(row * getGamePane().getTileSize());
         setSpeed(1);
         setDirection("UP");
-        setLives(3);
+        setLives(8);
         setRange(getGamePane().getTileSize());
         setVisualRange(getRange());
     }

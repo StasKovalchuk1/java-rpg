@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Enemy extends Entity{
 
-    Image enemyImage;
+//    Image enemyImage;
     int walkingCounter = 0;
     private int range;
     public int getRange(){return range;}
@@ -50,23 +50,23 @@ public class Enemy extends Entity{
         switch (getDirection()) {
             case "UP":
                 if (getSpriteNum() == 1) {
-                    enemyImage = up1;
-                } else enemyImage = up2;
+                    setEntityImage(up1);
+                } else setEntityImage(up2);
                 break;
             case "DOWN":
                 if (getSpriteNum() == 1) {
-                    enemyImage = down1;
-                } else enemyImage = down2;
+                    setEntityImage(down1);
+                } else setEntityImage(down2);
                 break;
             case "LEFT":
                 if (getSpriteNum() == 1) {
-                    enemyImage = left1;
-                } else enemyImage = left2;
+                    setEntityImage(left1);
+                } else setEntityImage(left2);
                 break;
             case "RIGHT":
                 if (getSpriteNum() == 1) {
-                    enemyImage = right1;
-                } else enemyImage = right2;
+                    setEntityImage(right1);
+                } else setEntityImage(right2);
                 break;
         }
 
@@ -92,17 +92,17 @@ public class Enemy extends Entity{
     @Override
     public void draw(GraphicsContext gc){
         if (getAlive()){
-            int screenX = getWorldX() - getGamePane().player.getWorldX() + getGamePane().player.screenX;
-            int screenY = getWorldY() - getGamePane().player.getWorldY() + getGamePane().player.screenY;
+            setScreenX(getWorldX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
+            setScreenY(getWorldY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
             if (!isInVisualRange(visualRange, getGamePane().player.getHitbox())) {
-                if ((screenX + getGamePane().getTileSize() >= 0 && screenX - getGamePane().getTileSize() <= getGamePane().getScreenWidth()) &&
-                        (screenY + getGamePane().getTileSize() >= 0 && screenY - getGamePane().getTileSize() <= getGamePane().getScreenHeight())) {
-                    gc.drawImage(enemyImage, screenX, screenY, getGamePane().getTileSize(), getGamePane().getTileSize());
+                if ((getScreenX() + getGamePane().getTileSize() >= 0 && getScreenX() - getGamePane().getTileSize() <= getGamePane().getScreenWidth()) &&
+                        (getScreenY() + getGamePane().getTileSize() >= 0 && getScreenY() - getGamePane().getTileSize() <= getGamePane().getScreenHeight())) {
+                    gc.drawImage(getEntityImage(), getScreenX(), getScreenY(), getGamePane().getTileSize(), getGamePane().getTileSize());
                 }
             } else {
-                attack(gc, screenX, screenY);
-                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.screenX);
-                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.screenY);
+                attack(gc, getScreenX(), getScreenY());
+                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
+                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
                 gc.setStroke(Color.WHITE);
                 gc.setLineWidth(2);
                 gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
@@ -111,18 +111,19 @@ public class Enemy extends Entity{
         }
     }
 
-    private boolean isInVisualRange(Rectangle visualRange, Rectangle target){
+
+    /**
+     *
+     * @param visualRange
+     * @param target
+     * @return
+     */
+    public boolean isInVisualRange(Rectangle visualRange, Rectangle target){
         if (target.intersects(visualRange.getBoundsInLocal())) {
 //            MyLogger.getMyLogger().info("Player is in visual range of th enemy : " );
             return true;
         }
         return false;
     }
-
-    @Override
-    public void defend() {
-
-    }
-
 }
 

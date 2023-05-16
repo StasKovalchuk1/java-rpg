@@ -22,7 +22,7 @@ public class TileManager {
     private URL resourceToTiles = getClass().getClassLoader().getResource(tileNumFile);
     private File tilesFile;
     private File mapFile;
-    private String mapFileName = "maps/map1.txt";
+    private String mapFileName = "maps/map.txt";
     private URL resourceToMap = getClass().getClassLoader().getResource(mapFileName);
 
     {
@@ -113,8 +113,8 @@ public class TileManager {
                 int worldX = col * gamePane.getTileSize();
                 int worldY = row * gamePane.getTileSize();
                 // set where we should print title regarding the hero
-                int screenX = worldX - gamePane.player.getWorldX() + gamePane.player.screenX;
-                int screenY = worldY - gamePane.player.getWorldY() + gamePane.player.screenY;
+                int screenX = worldX - gamePane.player.getWorldX() + gamePane.player.getScreenX();
+                int screenY = worldY - gamePane.player.getWorldY() + gamePane.player.getScreenY();
                 // print only tiles which are on the screen
                 if ((screenX + gamePane.getTileSize() >= 0 && screenX - gamePane.getTileSize() <= gamePane.getScreenWidth()) &&
                         (screenY + gamePane.getTileSize() >= 0 && screenY - gamePane.getTileSize() <= gamePane.getScreenHeight())) {

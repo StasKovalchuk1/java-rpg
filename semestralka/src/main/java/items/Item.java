@@ -12,7 +12,7 @@ public abstract class Item {
     private String name;
     private boolean isTaken = false;
     private boolean insideChest;
-    private int worldX, worldY;
+    private Integer worldX, worldY;
     public int getWorldY(){return worldY;}
     public void setWorldY(int value){worldY = value;}
     public int getWorldX(){return worldX;}
@@ -25,13 +25,9 @@ public abstract class Item {
     public void setInsideChest(boolean value){insideChest = value;}
     public boolean getIsTaken(){return isTaken;}
     public void setIsTaken(boolean value){isTaken = value;}
-
-
-
     public boolean getIsOpened() {
         return isOpened;
     }
-
     public void setIsOpened(boolean value) {
         isOpened = value;
     }

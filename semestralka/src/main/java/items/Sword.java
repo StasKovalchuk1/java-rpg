@@ -6,11 +6,11 @@ public class Sword extends Item {
 
     public int damage = 10;
 
-    public Sword(String name, Image image, int worldX, int worldY, boolean insideChest){
+    public Sword(String name, Image image, Integer worldX, Integer worldY, boolean insideChest){
         setName(name);
         setImage(image);
-        setWorldX(worldX);
-        setWorldY(worldY);
+        if (worldX != null) setWorldX(worldX);
+        if (worldY != null) setWorldY(worldY);
         setInsideChest(insideChest);
     }
 }

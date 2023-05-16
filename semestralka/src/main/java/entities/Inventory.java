@@ -18,9 +18,7 @@ import java.util.ArrayList;
 public class Inventory {
 
     private ArrayList<Item> list = new ArrayList<>();
-    public ArrayList<Item> getInventory() {
-        return list;
-    }
+    public ArrayList<Item> getInventory() {return list;}
     private int maxListSize = 15;
     public int getMaxListSize() {
         return maxListSize;
@@ -47,6 +45,10 @@ public class Inventory {
         this.gamePane = gamePane;
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     public void setInventory() throws IOException {
         FileReader fileReader = new FileReader(inventoryFile);
         BufferedReader reader = new BufferedReader(fileReader);
@@ -55,24 +57,22 @@ public class Inventory {
             String[] arrLine = line.split(" ");
             switch (arrLine[0]) {
                 case "key":
-                    list.add(new Key(arrLine[0], new Image("items/key.png"),
-                            Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
-                            Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), false));
+                    list.add(new Key(arrLine[0], new Image("items/key.png"), null, null, false));
                     break;
                 case "sword":
-                    list.add(new Sword(arrLine[0], new Image("items/sword.png"),
-                            Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
-                            Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), false));
+                    list.add(new Sword(arrLine[0], new Image("items/sword.png"),null, null, false));
                     break;
                 case "shield":
-                    list.add(new Shield(arrLine[0], new Image("items/shield.png"),
-                            Integer.parseInt(arrLine[2]) * gamePane.getTileSize(),
-                            Integer.parseInt(arrLine[1]) * gamePane.getTileSize(), false));
+                    list.add(new Shield(arrLine[0], new Image("items/shield.png"),null, null, false));
                     break;
             }
         }
     }
 
+    /**
+     *
+     * @param gc
+     */
     public void draw(GraphicsContext gc) {
         if (gamePane.keyHandler.inventoryPressed) {
             gc.setFill(Color.rgb(20, 20, 20, 0.7));
@@ -100,6 +100,11 @@ public class Inventory {
             }
         }
     }
+
+    /**
+     *
+     * @return
+     */
     public Boolean checkSwordInList(){
         for (Item item : list){
             if (item instanceof Sword) return true;
@@ -107,6 +112,10 @@ public class Inventory {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public Boolean checkChestInList(){
         for (Item item : list){
             if (item instanceof Chest) return true;
@@ -114,6 +123,10 @@ public class Inventory {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public Boolean checkKeyInList(){
         for (Item item : list){
             if (item instanceof Key) return true;
@@ -121,6 +134,10 @@ public class Inventory {
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public Boolean checkShieldInList(){
         for (Item item : list){
             if (item instanceof Shield) return true;

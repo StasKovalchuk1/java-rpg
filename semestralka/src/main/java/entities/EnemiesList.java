@@ -44,8 +44,9 @@ public class EnemiesList {
             String[] arrLine = line.split(" ");
             if (arrLine[2].equals("ork")){
                 enemiesList.add(new Ork(gamePane, Integer.parseInt(arrLine[0]), Integer.parseInt(arrLine[1])));
-            } else {
+            } else if (arrLine[2].equals("boss")){
                 enemiesList.add(new Boss(gamePane, Integer.parseInt(arrLine[0]), Integer.parseInt(arrLine[1])));
+                System.out.println("boss has been created : " + enemiesList.get(2).getWorldX() + " " + enemiesList.get(2).getWorldY());
             }
         }
     }

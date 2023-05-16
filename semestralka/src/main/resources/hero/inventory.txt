@@ -1,1 +1,2 @@
-sword 1 1 false
+sword
+shield

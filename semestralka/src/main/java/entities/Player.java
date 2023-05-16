@@ -12,8 +12,6 @@ import java.net.URL;
 
 public class Player extends Entity {
     private final KeyHandler keyHandler;
-    public final int screenX;
-    public final int screenY;
     private final String heroFileName = "hero/hero.txt";
     private final URL resourceToEnemies = getClass().getClassLoader().getResource(heroFileName);
     private final File heroFile;
@@ -28,8 +26,8 @@ public class Player extends Entity {
     public Player(GamePane gamePane, KeyHandler keyHandler) throws IOException {
         setGamePane(gamePane);
         this.keyHandler = keyHandler;
-        screenX = gamePane.getScreenWidth() / 2 - (gamePane.getTileSize() / 2);
-        screenY = gamePane.getScreenHeight() / 2 - (gamePane.getTileSize() / 2);
+        setScreenX(gamePane.getScreenWidth() / 2 - (gamePane.getTileSize() / 2));
+        setScreenY(gamePane.getScreenHeight() / 2 - (gamePane.getTileSize() / 2));
         setDefaultValues();
         getPlayerImage();
         setHitbox(new Rectangle(getWorldX() + 8, getWorldY() + 16, 32, 32));
@@ -52,11 +50,11 @@ public class Player extends Entity {
         while ((line = reader.readLine()) != null) {
             String[] arrLine = line.split(" ");
             setWorldX(getGamePane().getTileSize() * Integer.parseInt(arrLine[0]));
-            setWorldY(getGamePane().getTileSize() * Integer.parseInt(arrLine[0]));
+            setWorldY(getGamePane().getTileSize() * Integer.parseInt(arrLine[1]));
         }
         setSpeed(4);
         setDirection("DOWN");
-        setLives(5);
+        setLives(15);
     }
 
     /**
@@ -79,6 +77,10 @@ public class Player extends Entity {
         attackLeft2 = new Image("hero/attack_left_2.png");
         attackRight1 = new Image("hero/attack_right_1.png");
         attackRight2 = new Image("hero/attack_right_2.png");
+        guardDown = new Image("hero/guard_down_1.png");
+        guardUp = new Image("hero/guard_up_1.png");
+        guardLeft = new Image("hero/guard_left_1.png");
+        guardRight = new Image("hero/guard_right_1.png");
     }
 
     @Override
@@ -87,11 +89,11 @@ public class Player extends Entity {
         getHitbox().setX(getWorldX() + 8);
         getHitbox().setY(getWorldY() + 8);
         interactionWithObjects();
-//        System.out.println(getHitbox().getX());
-//        System.out.println(getHitbox().getY());
-//        System.out.println("-----------------");
     }
 
+    /**
+     *
+     */
     private void handleMoving(){
         if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed
                 || keyHandler.rightPressed) {
@@ -128,23 +130,36 @@ public class Player extends Entity {
         if (keyHandler.chestPressed) {
             getGamePane().collisionCheck.checkChest(this);
         }
-        if (keyHandler.attackPressed && getGamePane().inventory.checkSwordInList()) {
+        if ((keyHandler.attackPressed && getGamePane().inventory.checkSwordInList()) || isAttacking()) {
             setAttacking(true);
             getAttackHitbox().setX(getWorldX() + 8);
             getAttackHitbox().setY(getWorldY() + 8);
             changeAttackHitboxCoord();
-            for (Entity entity: getGamePane().enemiesList.getEnemiesList()) {
-                if (entity.getAlive()){
-                    getGamePane().collisionCheck.checkHit(this, entity);
+            for (Enemy enemy: getGamePane().enemiesList.getEnemiesList()) {
+                if (enemy.getAlive()){
+                    getGamePane().collisionCheck.checkHit(this, enemy);
                 }
             }
+        }
+        if (keyHandler.defendPressed && getGamePane().inventory.checkShieldInList()) {
+            setDefending(true);
         }
     }
 
     @Override
     public void draw(GraphicsContext gc) {
         if (getAlive()) {
-            if (!getAttacking()) {
+            if (isAttacking()) {
+                attack(gc, getScreenX(), getScreenY());
+                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
+                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
+                gc.setStroke(Color.WHITE);
+                gc.setLineWidth(2);
+                gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+                gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+            } else if (isDefending()){
+                defend(gc);
+            } else {
                 switch (getDirection()) {
                     case "UP":
                         if (getSpriteNum() == 1) {
@@ -179,21 +194,9 @@ public class Player extends Entity {
                         }
                         break;
                 }
-                gc.drawImage(getEntityImage(), screenX, screenY, getGamePane().getTileSize(), getGamePane().getTileSize());
-            } else {
-                attack(gc, screenX, screenY);
-                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.screenX);
-                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.screenY);
-                gc.setStroke(Color.WHITE);
-                gc.setLineWidth(2);
-                gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
-                gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+                gc.drawImage(getEntityImage(), getScreenX(), getScreenY(), getGamePane().getTileSize(), getGamePane().getTileSize());
             }
         }
     }
 
-    @Override
-    public void defend() {
-
-    }
 }

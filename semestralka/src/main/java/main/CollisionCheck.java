@@ -133,8 +133,11 @@ public class CollisionCheck {
     public void checkHit(Entity entityAttack, Entity entityGetHit) {
         if (entityGetHit.getAlive() && entityAttack.getAlive()) {
             if (entityAttack.getAttackHitbox().intersects(entityGetHit.getHitbox().getBoundsInLocal())) {
-                entityGetHit.getHitProcess();
-            } else entityGetHit.setHitCounter(0);
+                if (!(entityAttack.checkOppositeDirection(entityAttack, entityGetHit) && entityGetHit.isDefending())){
+                    entityGetHit.getHitProcess();
+                }
+            }
+//            else entityGetHit.setHitCounter(0);
         }
     }
 
