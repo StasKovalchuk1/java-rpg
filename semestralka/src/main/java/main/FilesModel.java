@@ -14,11 +14,6 @@ public class FilesModel {
     private static final String mapFileName = "gamedata/map.txt";
     private static final String entitiesFileName = "gamedata/entitieslist.txt";
     private static final String inventoryFileName = "gamedata/inventory.txt";
-//    private static URL resource = FilesModel.class.getClassLoader().getResource(itemsFileName);
-//    private static URL resourceToTiles = FilesModel.class.getClassLoader().getResource(tileNumFile);
-//    private static URL resourceToMap = FilesModel.class.getClassLoader().getResource(mapFileName);
-//    private static URL resourceToEntities = FilesModel.class.getClassLoader().getResource(entitiesFileName);
-//    private static URL resourceToInventory = FilesModel.class.getClassLoader().getResource(inventoryFileName);
     private static File itemsFile;
     private static File tilesFile;
     private static File mapFile;

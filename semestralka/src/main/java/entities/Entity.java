@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import main.GamePane;
+import main.SoundManager;
 
 public abstract class Entity {
     private GamePane gamePane;
@@ -407,6 +408,7 @@ public abstract class Entity {
      * Control that each attack takes 25 frames
      */
     public void attackingProcess() {
+        if (attackCounter == 5) SoundManager.playHitSound();
         attackCounter++;
         if (attackCounter < 15) {
             attackNum = 1;
@@ -465,10 +467,18 @@ public abstract class Entity {
         if (getHitCounter() == 10) {
             decreaseLives();
             if (getLives() <= 0) setAlive(false);
+            SoundManager.playGetHitSound();
         }
         if (getHitCounter() == 35) {
             setHitCounter(0);
         }
+    }
+
+    /**
+     *
+     */
+    public void blockHitProcess() {
+        if (defendCounter == 5) SoundManager.playHitShieldSound();
     }
 
     /**

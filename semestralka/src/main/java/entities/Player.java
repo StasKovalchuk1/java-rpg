@@ -40,8 +40,8 @@ public class Player extends Entity {
         while ((line = reader.readLine()) != null) {
             String[] arrLine = line.split(" ");
             if (arrLine[0].equals("hero")){
-                setWorldX(getGamePane().getTileSize() * Integer.parseInt(arrLine[1]));
-                setWorldY(getGamePane().getTileSize() * Integer.parseInt(arrLine[2]));
+                setWorldX(getGamePane().getTileSize() * Integer.parseInt(arrLine[2]));
+                setWorldY(getGamePane().getTileSize() * Integer.parseInt(arrLine[1]));
             }
         }
         reader.close();
@@ -144,12 +144,12 @@ public class Player extends Entity {
         if (getAlive()) {
             if (isAttacking()) {
                 attack(gc, getScreenX(), getScreenY());
-                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
-                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
-                gc.setStroke(Color.WHITE);
-                gc.setLineWidth(2);
-                gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
-                gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+//                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
+//                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
+//                gc.setStroke(Color.WHITE);
+//                gc.setLineWidth(2);
+//                gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+//                gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
             } else if (isDefending()){
                 defend(gc);
             } else {

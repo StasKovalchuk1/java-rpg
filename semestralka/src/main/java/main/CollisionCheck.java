@@ -98,6 +98,7 @@ public class CollisionCheck {
                     if (!item.getName().equals("chest")){
                         item.setIsTaken(true);
                         gamePane.inventory.getInventory().add(item);
+                        SoundManager.playTakeItemSound();
                     }
             }
         }
@@ -136,8 +137,8 @@ public class CollisionCheck {
                 if (!(entityAttack.checkOppositeDirection(entityAttack, entityGetHit) && entityGetHit.isDefending())){
                     entityGetHit.getHitProcess();
                 }
+                else entityGetHit.blockHitProcess();
             }
-//            else entityGetHit.setHitCounter(0);
         }
     }
 
