@@ -12,16 +12,6 @@ import java.net.URL;
 
 public class Player extends Entity {
     private final KeyHandler keyHandler;
-    private final String heroFileName = "hero/hero.txt";
-    private final URL resourceToEnemies = getClass().getClassLoader().getResource(heroFileName);
-    private final File heroFile;
-    {
-        try {
-            heroFile = new File(resourceToEnemies.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public Player(GamePane gamePane, KeyHandler keyHandler) throws IOException {
         setGamePane(gamePane);
@@ -44,14 +34,17 @@ public class Player extends Entity {
      * Set the values of the hero
      */
     private void setDefaultValues() throws IOException {
-        FileReader fileReader = new FileReader(heroFile);
+        FileReader fileReader = new FileReader(FilesModel.getEntitiesFile());
         BufferedReader reader = new BufferedReader(fileReader);
         String line;
         while ((line = reader.readLine()) != null) {
             String[] arrLine = line.split(" ");
-            setWorldX(getGamePane().getTileSize() * Integer.parseInt(arrLine[0]));
-            setWorldY(getGamePane().getTileSize() * Integer.parseInt(arrLine[1]));
+            if (arrLine[0].equals("hero")){
+                setWorldX(getGamePane().getTileSize() * Integer.parseInt(arrLine[1]));
+                setWorldY(getGamePane().getTileSize() * Integer.parseInt(arrLine[2]));
+            }
         }
+        reader.close();
         setSpeed(4);
         setDirection("DOWN");
         setLives(15);
@@ -61,26 +54,26 @@ public class Player extends Entity {
      * Loads player images from resources
      */
     private void getPlayerImage() {
-        up1 = new Image("hero/up1.png");
-        up2 = new Image("hero/up2.png");
-        down1 = new Image("hero/down1.png");
-        down2 = new Image("hero/down2.png");
-        left1 = new Image("hero/left1.png");
-        left2 = new Image("hero/left2.png");
-        right1 = new Image("hero/right1.png");
-        right2 = new Image("hero/right2.png");
-        attackUp1 = new Image("hero/attack_up_1.png");
-        attackUp2 = new Image("hero/attack_up_2.png");
-        attackDown1 = new Image("hero/attack_down_1.png");
-        attackDown2 = new Image("hero/attack_down_2.png");
-        attackLeft1 = new Image("hero/attack_left_1.png");
-        attackLeft2 = new Image("hero/attack_left_2.png");
-        attackRight1 = new Image("hero/attack_right_1.png");
-        attackRight2 = new Image("hero/attack_right_2.png");
-        guardDown = new Image("hero/guard_down_1.png");
-        guardUp = new Image("hero/guard_up_1.png");
-        guardLeft = new Image("hero/guard_left_1.png");
-        guardRight = new Image("hero/guard_right_1.png");
+        up1 = new Image("entity/hero/up1.png");
+        up2 = new Image("entity/hero/up2.png");
+        down1 = new Image("entity/hero/down1.png");
+        down2 = new Image("entity/hero/down2.png");
+        left1 = new Image("entity/hero/left1.png");
+        left2 = new Image("entity/hero/left2.png");
+        right1 = new Image("entity/hero/right1.png");
+        right2 = new Image("entity/hero/right2.png");
+        attackUp1 = new Image("entity/hero/attack_up_1.png");
+        attackUp2 = new Image("entity/hero/attack_up_2.png");
+        attackDown1 = new Image("entity/hero/attack_down_1.png");
+        attackDown2 = new Image("entity/hero/attack_down_2.png");
+        attackLeft1 = new Image("entity/hero/attack_left_1.png");
+        attackLeft2 = new Image("entity/hero/attack_left_2.png");
+        attackRight1 = new Image("entity/hero/attack_right_1.png");
+        attackRight2 = new Image("entity/hero/attack_right_2.png");
+        guardDown = new Image("entity/hero/guard_down_1.png");
+        guardUp = new Image("entity/hero/guard_up_1.png");
+        guardLeft = new Image("entity/hero/guard_left_1.png");
+        guardRight = new Image("entity/hero/guard_right_1.png");
     }
 
     @Override
@@ -199,4 +192,9 @@ public class Player extends Entity {
         }
     }
 
+    public void savePlayer() throws IOException {
+        FileWriter fileWriter = new FileWriter(FilesModel.getEntitiesFile(), false);
+        fileWriter.write("hero " + getWorldY() / getGamePane().getTileSize() + " " + getWorldX() / getGamePane().getTileSize() + "\n");
+        fileWriter.close();
+    }
 }

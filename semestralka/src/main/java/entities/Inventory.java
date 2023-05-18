@@ -7,10 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,17 +27,6 @@ public class Inventory {
     private String title = "My Inventory";
     private Font titleFont = new Font("Tiempos Text", fontSize);
 
-    private String inventoryFileName = "hero/inventory.txt";
-    private URL resource = getClass().getClassLoader().getResource(inventoryFileName);
-    private File inventoryFile;
-    {
-        try {
-            inventoryFile = new File(resource.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public Inventory(GamePane gamePane) {
         this.gamePane = gamePane;
     }
@@ -50,7 +36,7 @@ public class Inventory {
      * @throws IOException
      */
     public void setInventory() throws IOException {
-        FileReader fileReader = new FileReader(inventoryFile);
+        FileReader fileReader = new FileReader(FilesModel.getInventoryFile());
         BufferedReader reader = new BufferedReader(fileReader);
         String line;
         while ((line = reader.readLine()) != null) {
@@ -67,6 +53,7 @@ public class Inventory {
                     break;
             }
         }
+        reader.close();
     }
 
     /**
@@ -143,5 +130,19 @@ public class Inventory {
             if (item instanceof Shield) return true;
         }
         return false;
+    }
+
+    public void saveInventory() throws IOException {
+        FileWriter fileWriter = new FileWriter(FilesModel.getInventoryFile(), false);
+        for (Item item : list) {
+            if (item instanceof Key) {
+                fileWriter.write("key \n");
+            } else if (item instanceof Sword) {
+                fileWriter.write("sword \n");
+            } else if (item instanceof Shield) {
+                fileWriter.write("shield \n");
+            }
+        }
+        fileWriter.close();
     }
 }

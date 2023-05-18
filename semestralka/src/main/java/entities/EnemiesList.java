@@ -1,11 +1,11 @@
 package entities;
 
 import javafx.scene.canvas.GraphicsContext;
+import main.FilesModel;
 import main.GamePane;
+import main.MyLogger;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 ;
@@ -15,16 +15,6 @@ public class EnemiesList {
     private List<Enemy> enemiesList = new ArrayList();
     public List<Enemy> getEnemiesList() {
         return enemiesList;
-    }
-    private String enemiesFileName = "enemy/enemieslist.txt";
-    private URL resourceToEnemies = getClass().getClassLoader().getResource(enemiesFileName);
-    private File enemiesFile;
-    {
-        try {
-            enemiesFile = new File(resourceToEnemies.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public EnemiesList(GamePane gamePane) throws IOException {
@@ -37,18 +27,20 @@ public class EnemiesList {
      * @throws IOException
      */
     public void setEnemiesList() throws IOException {
-        FileReader fileReader = new FileReader(enemiesFile);
+        MyLogger.getMyLogger().info("Loading the enemies");
+        FileReader fileReader = new FileReader(FilesModel.getEntitiesFile());
         BufferedReader reader = new BufferedReader(fileReader);
         String line;
         while ((line = reader.readLine()) != null) {
             String[] arrLine = line.split(" ");
-            if (arrLine[2].equals("ork")){
-                enemiesList.add(new Ork(gamePane, Integer.parseInt(arrLine[0]), Integer.parseInt(arrLine[1])));
-            } else if (arrLine[2].equals("boss")){
-                enemiesList.add(new Boss(gamePane, Integer.parseInt(arrLine[0]), Integer.parseInt(arrLine[1])));
-                System.out.println("boss has been created : " + enemiesList.get(2).getWorldX() + " " + enemiesList.get(2).getWorldY());
+            if (arrLine[0].equals("ork")){
+                enemiesList.add(new Ork(gamePane, Integer.parseInt(arrLine[1]), Integer.parseInt(arrLine[2])));
+            } else if (arrLine[0].equals("boss")){
+                enemiesList.add(new Boss(gamePane, Integer.parseInt(arrLine[1]), Integer.parseInt(arrLine[2])));
+//                System.out.println("boss has been created : " + enemiesList.get(2).getWorldX() + " " + enemiesList.get(2).getWorldY());
             }
         }
+        reader.close();
     }
 
     /**
@@ -65,8 +57,22 @@ public class EnemiesList {
      * Updates the values of each enemy
      */
     public void updateEnemies() {
-        for (Enemy enemy : enemiesList){
+        for (Enemy enemy : enemiesList) {
             enemy.update();
         }
+    }
+
+    public void saveEnemies() throws IOException {
+        FileWriter fileWriter = new FileWriter(FilesModel.getEntitiesFile(), true);
+        for (Enemy enemy : enemiesList) {
+            if (enemy.getAlive()){
+                if (enemy instanceof Ork) {
+                    fileWriter.write("ork " + enemy.getWorldY() / gamePane.getTileSize() + " " + enemy.getWorldX() / gamePane.getTileSize() + "\n");
+                } else if (enemy instanceof Boss) {
+                    fileWriter.write("boss " + enemy.getWorldY() / gamePane.getTileSize() + " " + enemy.getWorldX() / gamePane.getTileSize() + "\n");
+                }
+            }
+        }
+        fileWriter.close();
     }
 }

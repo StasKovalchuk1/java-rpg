@@ -83,10 +83,6 @@ public class Enemy extends Entity{
             changeAttackHitboxCoord();
             getGamePane().collisionCheck.checkHit(this, getGamePane().player);
         }
-//        getHitbox().setX(getHitbox().getX() + getGamePane().getTileSize());
-//        System.out.println(getHitbox().getX());
-//        System.out.println(getHitbox().getY());
-//        System.out.println("-----------------");
     }
 
     @Override

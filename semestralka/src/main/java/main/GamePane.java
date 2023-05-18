@@ -54,4 +54,11 @@ public class GamePane extends Canvas{
         myTimer.start();
     }
 
+    public void saveGame() throws IOException {
+        itemManager.saveItems();
+        inventory.saveInventory();
+        player.savePlayer();
+        enemiesList.saveEnemies();
+    }
+
 }

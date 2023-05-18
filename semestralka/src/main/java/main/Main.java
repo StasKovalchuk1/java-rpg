@@ -32,6 +32,13 @@ public class Main extends Application{
         final Scene scene = new Scene(root);
         gamePane.requestFocus();
         stage.setScene(scene);
+        stage.setOnCloseRequest(windowEvent -> {
+            try {
+                gamePane.saveGame();
+            } catch (IOException e) {
+                MyLogger.getMyLogger().severe("Exeption! Game wasn't saved " + e);
+            }
+        });
         stage.show();
 
         gamePane.startGameThread();

@@ -20,22 +20,22 @@ public class Boss extends Enemy{
      * Loads enemy images from resources
      */
     private void getEnemyImage() {
-        up1 = new Image("enemy/boss/up_1.png");
-        up2 = new Image("enemy/boss/up_2.png");
-        down1 = new Image("enemy/boss/down_1.png");
-        down2 = new Image("enemy/boss/down_2.png");
-        left1 = new Image("enemy/boss/left_1.png");
-        left2 = new Image("enemy/boss/left_2.png");
-        right1 = new Image("enemy/boss/right_1.png");
-        right2 = new Image("enemy/boss/right_2.png");
-        attackUp1 = new Image("enemy/boss/attack_up_1.png");
-        attackUp2 = new Image("enemy/boss/attack_up_2.png");
-        attackDown1 = new Image("enemy/boss/attack_down_1.png");
-        attackDown2 = new Image("enemy/boss/attack_down_2.png");
-        attackLeft1 = new Image("enemy/boss/attack_left_1.png");
-        attackLeft2 = new Image("enemy/boss/attack_left_2.png");
-        attackRight1 = new Image("enemy/boss/attack_right_1.png");
-        attackRight2 = new Image("enemy/boss/attack_right_2.png");
+        up1 = new Image("entity/boss/up_1.png");
+        up2 = new Image("entity/boss/up_2.png");
+        down1 = new Image("entity/boss/down_1.png");
+        down2 = new Image("entity/boss/down_2.png");
+        left1 = new Image("entity/boss/left_1.png");
+        left2 = new Image("entity/boss/left_2.png");
+        right1 = new Image("entity/boss/right_1.png");
+        right2 = new Image("entity/boss/right_2.png");
+        attackUp1 = new Image("entity/boss/attack_up_1.png");
+        attackUp2 = new Image("entity/boss/attack_up_2.png");
+        attackDown1 = new Image("entity/boss/attack_down_1.png");
+        attackDown2 = new Image("entity/boss/attack_down_2.png");
+        attackLeft1 = new Image("entity/boss/attack_left_1.png");
+        attackLeft2 = new Image("entity/boss/attack_left_2.png");
+        attackRight1 = new Image("entity/boss/attack_right_1.png");
+        attackRight2 = new Image("entity/boss/attack_right_2.png");
     }
 
     /**
@@ -97,22 +97,4 @@ public class Boss extends Enemy{
             }
         }
     }
-
-//    @Override
-//    public void drawImageAttack(GraphicsContext gc, int screenX, int screenY){
-//        switch (getDirection()){
-//            case "UP":
-//                gc.drawImage(getEntityImage(), screenX, screenY - getGamePane().getTileSize() * 2, getGamePane().getTileSize() * 2, getGamePane().getTileSize() * 2 * 2);
-//                break;
-//            case "DOWN":
-//                gc.drawImage(getEntityImage(), screenX, screenY, getGamePane().getTileSize() * 2, getGamePane().getTileSize() * 2 * 2);
-//                break;
-//            case "LEFT":
-//                gc.drawImage(getEntityImage(), screenX - getGamePane().getTileSize() * 2, screenY, getGamePane().getTileSize() * 2 * 2, getGamePane().getTileSize()* 2);
-//                break;
-//            case "RIGHT":
-//                gc.drawImage(getEntityImage(), screenX, screenY, getGamePane().getTileSize() * 2 * 2, getGamePane().getTileSize() * 2);
-//                break;
-//        }
-//    }
 }

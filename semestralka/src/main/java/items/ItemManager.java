@@ -5,26 +5,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class ItemManager {
     GamePane gamePane;
     private List<Item> items = new ArrayList<>();
     public List<Item> getAllItems(){return items;}
-    private String itemsFileName = "items/itemsInit.txt";
-    private URL resource = getClass().getClassLoader().getResource(itemsFileName);
-    private File itemsFile;
-    {
-        try {
-            itemsFile = new File(resource.toURI());
-        } catch (URISyntaxException e) {
-            MyLogger.getMyLogger().severe("Exception ::" + e);
-        }
-    }
 
     public ItemManager(GamePane gamePane) {
         this.gamePane = gamePane;
@@ -41,7 +28,7 @@ public class ItemManager {
      */
     private void getItems() throws IOException {
         MyLogger.getMyLogger().info("Loading the items");
-        FileReader fileReader = new FileReader(itemsFile);
+        FileReader fileReader = new FileReader(FilesModel.getItemsFile());
         BufferedReader reader = new BufferedReader(fileReader);
         try {
             String line;
@@ -66,6 +53,7 @@ public class ItemManager {
                         break;
                 }
             }
+            reader.close();
             Chest chest = null;
             for (Item item : items) {
                 if (item instanceof Chest) chest = (Chest) item;
@@ -75,7 +63,7 @@ public class ItemManager {
                     chest.inside.add(item);
                 }
             }
-            MyLogger.getMyLogger().info("Tiles are loaded");
+            MyLogger.getMyLogger().info("Items are loaded");
         } catch (Exception e){
             MyLogger.getMyLogger().severe("Exception ::" + e);
         }
@@ -103,5 +91,23 @@ public class ItemManager {
                 }
             }
         }
+    }
+
+    public void saveItems() throws IOException {
+        FileWriter fileWriter = new FileWriter(FilesModel.getItemsFile(), false);
+        for (Item item : items) {
+            if (!item.getIsTaken()) {
+                if (item instanceof Key) {
+                    fileWriter.write("key " + item.getWorldY() / gamePane.getTileSize() + " " + item.getWorldX() / gamePane.getTileSize() + " " + item.getInsideChest() + "\n");
+                } else if (item instanceof Sword) {
+                    fileWriter.write("sword " + item.getWorldY() / gamePane.getTileSize() + " " + item.getWorldX() / gamePane.getTileSize() + " " + item.getInsideChest() + "\n");
+                } else if (item instanceof Chest) {
+                    fileWriter.write("chest " + item.getWorldY() / gamePane.getTileSize() + " " + item.getWorldX() / gamePane.getTileSize() + " " + item.getInsideChest() + "\n");
+                } else if (item instanceof Shield) {
+                    fileWriter.write("shield " + item.getWorldY() / gamePane.getTileSize() + " " + item.getWorldX() / gamePane.getTileSize() + " " + item.getInsideChest() + "\n");
+                }
+            }
+        }
+        fileWriter.close();
     }
 }

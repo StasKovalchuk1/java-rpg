@@ -1,4 +1,0 @@
-key 3 3 false
-sword 42 3 false
-chest 40 40 false
-shield -1 -1 true

@@ -2,6 +2,7 @@ package tiles;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import main.FilesModel;
 import main.GamePane;
 import main.MyLogger;
 
@@ -18,23 +19,6 @@ public class TileManager {
     private GamePane gamePane;
     private Tile[] tiles;
     private int[][] mapTileNumbers;
-    private String tileNumFile = "maps/tileNum.txt";
-    private URL resourceToTiles = getClass().getClassLoader().getResource(tileNumFile);
-    private File tilesFile;
-    private File mapFile;
-    private String mapFileName = "maps/map.txt";
-    private URL resourceToMap = getClass().getClassLoader().getResource(mapFileName);
-
-    {
-        try {
-            tilesFile = new File(resourceToTiles.toURI());
-            mapFile = new File(resourceToMap.toURI());
-        } catch (Exception e) {
-            MyLogger.getMyLogger().severe("Exception ::" + e);
-//            throw new RuntimeException(e);
-        }
-    }
-
     public int[][] getMapTileNumbers(){return mapTileNumbers;}
     public Tile[] getTilesList(){return tiles;}
 
@@ -46,7 +30,7 @@ public class TileManager {
             throw new RuntimeException(e);
         }
         mapTileNumbers = new int[gamePane.getMaxWorldRow()][gamePane.getMaxWorldCol()];
-        fillMap(mapFile);
+        fillMap(FilesModel.getMapFile());
     }
 
     /**
@@ -55,7 +39,7 @@ public class TileManager {
      */
     private void getTiles() throws IOException {
         MyLogger.getMyLogger().info("Loading the tiles");
-        FileReader fileReader = new FileReader(tilesFile);
+        FileReader fileReader = new FileReader(FilesModel.getTilesFile());
         BufferedReader reader = new BufferedReader(fileReader);
         try {
         String line = reader.readLine();
@@ -70,6 +54,7 @@ public class TileManager {
                 tiles[i].solid = true;
             }
         }
+        reader.close();
         MyLogger.getMyLogger().info("Tiles are loaded");
         } catch (NumberFormatException e) {
             MyLogger.getMyLogger().severe("Exception ::" + e);
