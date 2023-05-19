@@ -8,9 +8,9 @@ import main.GamePane;
 
 public class Boss extends Enemy{
 
-    public Boss(GamePane gamePane, int row, int col){
+    public Boss(GamePane gamePane, int row, int col, int lives){
         setGamePane(gamePane);
-        setDefaultValues(row, col);
+        setDefaultValues(row, col, lives);
         getEnemyImage();
         setHitbox(new Rectangle(getWorldX() + 16, getWorldY() + 32, 64, 64));
         setAttackHitbox(new Rectangle(getWorldX() + 16, getWorldY() + 32, 64, 64));
@@ -43,12 +43,12 @@ public class Boss extends Enemy{
      * @param row The row where enemy will be placed
      * @param col The column where enemy will be placed
      */
-    private void setDefaultValues(int row, int col) {
+    private void setDefaultValues(int row, int col, int lives) {
         setWorldX(col * getGamePane().getTileSize());
         setWorldY(row * getGamePane().getTileSize());
+        setLives(lives);
         setSpeed(1);
         setDirection("UP");
-        setLives(10);
         setRange(getGamePane().getTileSize());
         setVisualRange(getRange() * 2);
     }
@@ -74,25 +74,27 @@ public class Boss extends Enemy{
         if (getAlive()){
             setScreenX(getWorldX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
             setScreenY(getWorldY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
+            gc.setFill(Color.WHITE);
+            gc.fillText("Lives : " + getLives(), getScreenX() + 20, getScreenY() - 5);
             if (!isInVisualRange(getVisualRange(), getGamePane().player.getHitbox())) {
                 if ((getScreenX() + getGamePane().getTileSize() >= 0 && getScreenX() - getGamePane().getTileSize() <= getGamePane().getScreenWidth()) &&
                         (getScreenY() + getGamePane().getTileSize() >= 0 && getScreenY() - getGamePane().getTileSize() <= getGamePane().getScreenHeight())) {
                     gc.drawImage(getEntityImage(), getScreenX(), getScreenY(), getGamePane().getTileSize() * 2, getGamePane().getTileSize() * 2);
-                    int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
-                    int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
-                    gc.setStroke(Color.WHITE);
-                    gc.setLineWidth(2);
-                    gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
-                    gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+//                    int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
+//                    int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
+//                    gc.setStroke(Color.WHITE);
+//                    gc.setLineWidth(2);
+//                    gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+//                    gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
                 }
             } else {
                 attack(gc, getScreenX(), getScreenY());
-                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
-                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
-                gc.setStroke(Color.WHITE);
-                gc.setLineWidth(2);
-                gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
-                gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+//                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
+//                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
+//                gc.setStroke(Color.WHITE);
+//                gc.setLineWidth(2);
+//                gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+//                gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
 
             }
         }

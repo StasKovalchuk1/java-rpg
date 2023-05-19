@@ -24,7 +24,6 @@ public class Enemy extends Entity{
     @Override
     public void update() {
         walking();
-//        checkCollisions();
         getHitbox().setX(getWorldX() + 8);
         getHitbox().setY(getWorldY() + 16);
         getVisualRange().setX(getWorldX() - range);
@@ -90,6 +89,8 @@ public class Enemy extends Entity{
         if (getAlive()){
             setScreenX(getWorldX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
             setScreenY(getWorldY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
+            gc.setFill(Color.WHITE);
+            gc.fillText("Lives : " + getLives(), getScreenX(), getScreenY() - 5);
             if (!isInVisualRange(visualRange, getGamePane().player.getHitbox())) {
                 if ((getScreenX() + getGamePane().getTileSize() >= 0 && getScreenX() - getGamePane().getTileSize() <= getGamePane().getScreenWidth()) &&
                         (getScreenY() + getGamePane().getTileSize() >= 0 && getScreenY() - getGamePane().getTileSize() <= getGamePane().getScreenHeight())) {
@@ -97,12 +98,12 @@ public class Enemy extends Entity{
                 }
             } else {
                 attack(gc, getScreenX(), getScreenY());
-                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
-                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
-                gc.setStroke(Color.WHITE);
-                gc.setLineWidth(2);
-                gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
-                gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+//                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
+//                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
+//                gc.setStroke(Color.WHITE);
+//                gc.setLineWidth(2);
+//                gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
+//                gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
             }
         }
     }

@@ -42,12 +42,12 @@ public class Player extends Entity {
             if (arrLine[0].equals("hero")){
                 setWorldX(getGamePane().getTileSize() * Integer.parseInt(arrLine[2]));
                 setWorldY(getGamePane().getTileSize() * Integer.parseInt(arrLine[1]));
+                setLives(Integer.parseInt(arrLine[3]));
             }
         }
         reader.close();
         setSpeed(4);
         setDirection("DOWN");
-        setLives(15);
     }
 
     /**
@@ -142,6 +142,8 @@ public class Player extends Entity {
     @Override
     public void draw(GraphicsContext gc) {
         if (getAlive()) {
+            gc.setFill(Color.WHITE);
+            gc.fillText("Lives : " + getLives(), getScreenX(), getScreenY() - 5);
             if (isAttacking()) {
                 attack(gc, getScreenX(), getScreenY());
 //                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
@@ -194,7 +196,8 @@ public class Player extends Entity {
 
     public void savePlayer() throws IOException {
         FileWriter fileWriter = new FileWriter(FilesModel.getEntitiesFile(), false);
-        fileWriter.write("hero " + getWorldY() / getGamePane().getTileSize() + " " + getWorldX() / getGamePane().getTileSize() + "\n");
+        fileWriter.write("hero " + getWorldY() / getGamePane().getTileSize() + " " +
+                getWorldX() / getGamePane().getTileSize() +  " " + getLives() + "\n");
         fileWriter.close();
     }
 }

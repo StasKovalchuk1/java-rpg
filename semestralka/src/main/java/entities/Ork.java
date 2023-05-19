@@ -6,9 +6,9 @@ import main.GamePane;
 
 
 public class Ork extends Enemy{
-    public Ork(GamePane gamePane, int row, int col) {
+    public Ork(GamePane gamePane, int row, int col, int lives) {
         setGamePane(gamePane);
-        setDefaultValues(row, col);
+        setDefaultValues(row, col, lives);
         getEnemyImage();
         setHitbox(new Rectangle(getWorldX() + 8, getWorldY() + 16, 32, 32));
         setAttackHitbox(new Rectangle(getWorldX() + 8, getWorldY() + 16, 32, 32));
@@ -41,12 +41,12 @@ public class Ork extends Enemy{
      * @param row The row where enemy will be placed
      * @param col The column where enemy will be placed
      */
-    private void setDefaultValues(int row, int col) {
+    private void setDefaultValues(int row, int col, int lives) {
         setWorldX(col * getGamePane().getTileSize());
         setWorldY(row * getGamePane().getTileSize());
         setSpeed(1);
         setDirection("UP");
-        setLives(8);
+        setLives(lives);
         setRange(getGamePane().getTileSize());
         setVisualRange(getRange());
     }

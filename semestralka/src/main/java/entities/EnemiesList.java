@@ -34,9 +34,9 @@ public class EnemiesList {
         while ((line = reader.readLine()) != null) {
             String[] arrLine = line.split(" ");
             if (arrLine[0].equals("ork")){
-                enemiesList.add(new Ork(gamePane, Integer.parseInt(arrLine[1]), Integer.parseInt(arrLine[2])));
+                enemiesList.add(new Ork(gamePane, Integer.parseInt(arrLine[1]), Integer.parseInt(arrLine[2]), Integer.parseInt(arrLine[3])));
             } else if (arrLine[0].equals("boss")){
-                enemiesList.add(new Boss(gamePane, Integer.parseInt(arrLine[1]), Integer.parseInt(arrLine[2])));
+                enemiesList.add(new Boss(gamePane, Integer.parseInt(arrLine[1]), Integer.parseInt(arrLine[2]), Integer.parseInt(arrLine[3])));
 //                System.out.println("boss has been created : " + enemiesList.get(2).getWorldX() + " " + enemiesList.get(2).getWorldY());
             }
         }
@@ -67,9 +67,11 @@ public class EnemiesList {
         for (Enemy enemy : enemiesList) {
             if (enemy.getAlive()){
                 if (enemy instanceof Ork) {
-                    fileWriter.write("ork " + enemy.getWorldY() / gamePane.getTileSize() + " " + enemy.getWorldX() / gamePane.getTileSize() + "\n");
+                    fileWriter.write("ork " + enemy.getWorldY() / gamePane.getTileSize() + " " +
+                            enemy.getWorldX() / gamePane.getTileSize() +  " " + enemy.getLives() + "\n");
                 } else if (enemy instanceof Boss) {
-                    fileWriter.write("boss " + enemy.getWorldY() / gamePane.getTileSize() + " " + enemy.getWorldX() / gamePane.getTileSize() + "\n");
+                    fileWriter.write("boss " + enemy.getWorldY() / gamePane.getTileSize() + " " +
+                            enemy.getWorldX() / gamePane.getTileSize() +  " " + enemy.getLives() + "\n");
                 }
             }
         }

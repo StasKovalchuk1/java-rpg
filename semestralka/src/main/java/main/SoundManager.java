@@ -15,37 +15,23 @@ public class SoundManager {
     private static final URL resourceToHitShieldSound = SoundManager.class.getClassLoader().getResource(hitShieldSoundFileName);
     private static final URL resourceToTakeItemSound = SoundManager.class.getClassLoader().getResource(takeItemSoundFileName);
 
-//    private static final String takeItemSoundFilePath = SoundManager.class.getClassLoader().getResource(takeItemSoundFileName).toExternalForm();
-
     public static void play(URL sourceFile) {
         new Thread(() -> {
             try {
-                // Загрузка аудиофайла
+                // load audio file
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(sourceFile.toURI()));
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
 
-                // Воспроизведение звука
+                // start play the sound
                 clip.start();
 
-                // Ожидание окончания воспроизведения
+                // wait the end of playing
                 clip.addLineListener(event -> {
                     if (event.getType() == LineEvent.Type.STOP) {
                         clip.close();
                     }
                 });
-//        try {
-//            File file = new File(sourceFile);
-//
-//            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
-//            Clip clip = AudioSystem.getClip();
-//            clip.open(audioInputStream);
-//            clip.start();
-//            clip.addLineListener(event -> {
-//                if (event.getType() == LineEvent.Type.STOP) {
-//                    clip.close();
-//                }
-//            });
             } catch (Exception e) {
                 MyLogger.getMyLogger().severe("Exception with playing sound");
                 e.printStackTrace();

@@ -6,8 +6,6 @@ import javafx.scene.paint.Color;
 
 public class MyTimer extends AnimationTimer {
     GamePane gamePane;
-//    private SoundManager soundManager = new SoundManager();
-
 
     public MyTimer(GamePane gamePane) {
         this.gamePane = gamePane;
@@ -17,7 +15,6 @@ public class MyTimer extends AnimationTimer {
     public void handle(long l) {
         update();
         draw();
-//        soundManager.playTakeItemSound();
     }
 
     private void update() {
