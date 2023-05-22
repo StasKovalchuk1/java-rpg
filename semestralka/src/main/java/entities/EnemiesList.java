@@ -1,8 +1,9 @@
 package entities;
 
 import javafx.scene.canvas.GraphicsContext;
-import main.FilesModel;
-import main.GamePane;
+import main.Controller;
+import model.FilesModel;
+import model.GameModel;
 import main.MyLogger;
 
 import java.io.*;
@@ -11,14 +12,15 @@ import java.util.List;
 ;
 
 public class EnemiesList {
-    GamePane gamePane;
+    GameModel gameModel = new GameModel();
+    private Controller controller;
     private List<Enemy> enemiesList = new ArrayList();
     public List<Enemy> getEnemiesList() {
         return enemiesList;
     }
 
-    public EnemiesList(GamePane gamePane) throws IOException {
-        this.gamePane = gamePane;
+    public EnemiesList(Controller controller) throws IOException {
+        this.controller = controller;
         setEnemiesList();
     }
 
@@ -34,9 +36,9 @@ public class EnemiesList {
         while ((line = reader.readLine()) != null) {
             String[] arrLine = line.split(" ");
             if (arrLine[0].equals("ork")){
-                enemiesList.add(new Ork(gamePane, Integer.parseInt(arrLine[1]), Integer.parseInt(arrLine[2]), Integer.parseInt(arrLine[3])));
+                enemiesList.add(new Ork(controller, Integer.parseInt(arrLine[1]), Integer.parseInt(arrLine[2]), Integer.parseInt(arrLine[3])));
             } else if (arrLine[0].equals("boss")){
-                enemiesList.add(new Boss(gamePane, Integer.parseInt(arrLine[1]), Integer.parseInt(arrLine[2]), Integer.parseInt(arrLine[3])));
+                enemiesList.add(new Boss(controller, Integer.parseInt(arrLine[1]), Integer.parseInt(arrLine[2]), Integer.parseInt(arrLine[3])));
 //                System.out.println("boss has been created : " + enemiesList.get(2).getWorldX() + " " + enemiesList.get(2).getWorldY());
             }
         }
@@ -67,14 +69,19 @@ public class EnemiesList {
         for (Enemy enemy : enemiesList) {
             if (enemy.getAlive()){
                 if (enemy instanceof Ork) {
-                    fileWriter.write("ork " + enemy.getWorldY() / gamePane.getTileSize() + " " +
-                            enemy.getWorldX() / gamePane.getTileSize() +  " " + enemy.getLives() + "\n");
+                    fileWriter.write("ork " + enemy.getWorldY() / gameModel.getTileSize() + " " +
+                            enemy.getWorldX() / gameModel.getTileSize() +  " " + enemy.getLives() + "\n");
                 } else if (enemy instanceof Boss) {
-                    fileWriter.write("boss " + enemy.getWorldY() / gamePane.getTileSize() + " " +
-                            enemy.getWorldX() / gamePane.getTileSize() +  " " + enemy.getLives() + "\n");
+                    fileWriter.write("boss " + enemy.getWorldY() / gameModel.getTileSize() + " " +
+                            enemy.getWorldX() / gameModel.getTileSize() +  " " + enemy.getLives() + "\n");
                 }
             }
         }
         fileWriter.close();
+    }
+
+    public void resetEnemies() throws IOException {
+        enemiesList.clear();
+        setEnemiesList();
     }
 }

@@ -1,16 +1,22 @@
-мая 19, 2023 11:59:10 AM main.MyLogger init
+мая 22, 2023 11:59:09 PM main.MyLogger init
 INFO: Logger Initialized
-мая 19, 2023 11:59:10 AM tiles.TileManager getTiles
+мая 22, 2023 11:59:09 PM map.TileManager getTiles
 INFO: Loading the tiles
-мая 19, 2023 11:59:10 AM tiles.TileManager getTiles
+мая 22, 2023 11:59:09 PM map.TileManager getTiles
 INFO: Tiles are loaded
-мая 19, 2023 11:59:10 AM tiles.TileManager fillMap
+мая 22, 2023 11:59:09 PM map.TileManager fillMap
 INFO: Loading the map
-мая 19, 2023 11:59:10 AM tiles.TileManager fillMap
+мая 22, 2023 11:59:09 PM map.TileManager fillMap
 INFO: Map is loaded
-мая 19, 2023 11:59:10 AM items.ItemManager getItems
+мая 22, 2023 11:59:09 PM items.ItemManager getItems
 INFO: Loading the items
-мая 19, 2023 11:59:10 AM items.ItemManager getItems
+мая 22, 2023 11:59:09 PM items.ItemManager getItems
 INFO: Items are loaded
-мая 19, 2023 11:59:10 AM entities.EnemiesList setEnemiesList
+мая 22, 2023 11:59:09 PM entities.EnemiesList setEnemiesList
+INFO: Loading the enemies
+мая 22, 2023 11:59:26 PM items.ItemManager getItems
+INFO: Loading the items
+мая 22, 2023 11:59:26 PM items.ItemManager getItems
+INFO: Items are loaded
+мая 22, 2023 11:59:26 PM entities.EnemiesList setEnemiesList
 INFO: Loading the enemies

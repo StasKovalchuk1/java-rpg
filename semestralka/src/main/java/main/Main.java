@@ -3,15 +3,19 @@ package main;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ButtonBar;
 import javafx.stage.Stage;
+import model.FilesModel;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+import java.util.Optional;
 
 
 public class Main extends Application{
 
-    private GamePane gamePane;
+    private Controller controller;
     private Group root;
 
     public Main() throws IOException {
@@ -24,24 +28,27 @@ public class Main extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         MyLogger.init();
-        gamePane = new GamePane();
+        controller = new Controller(stage);
         stage.setTitle("Nefor boy");
 
-        root = new Group(gamePane);
+        root = new Group(controller);
 
         final Scene scene = new Scene(root);
-        gamePane.requestFocus();
+        controller.requestFocus();
         stage.setScene(scene);
         stage.setOnCloseRequest(windowEvent -> {
             try {
-                gamePane.saveGame();
+                controller.saveGame();
             } catch (IOException e) {
                 MyLogger.getMyLogger().severe("Exeption! Game wasn't saved " + e);
+                e.printStackTrace();
             }
         });
         stage.show();
 
-        gamePane.startGameThread();
+        controller.startGameThread();
+
+
     }
 
 }

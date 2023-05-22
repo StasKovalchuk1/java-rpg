@@ -1,4 +1,6 @@
-package main;
+package model;
+
+import main.MyLogger;
 
 import javax.sound.sampled.*;
 import java.io.File;

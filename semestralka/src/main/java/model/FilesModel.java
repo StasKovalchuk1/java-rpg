@@ -1,6 +1,10 @@
-package main;
+package model;
+
+import main.MyLogger;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 
 public class FilesModel {
@@ -18,8 +22,21 @@ public class FilesModel {
     private static File tilesFile;
     private static File mapFile;
     private static File entitiesFile;
-
     private static File inventoryFile;
+
+    private static final String defaultEntities = "hero 24 24 15\n" +
+            "boss 5 45 3\n" +
+            "ork 42 42 2\n" +
+            "ork 42 3 2";
+
+    private static final String defaultItems = "chest 42 40 false\n" +
+            "shield -1 -24 true\n" +
+            "key 8 8 false\n" +
+            "sword 42 2 false";
+
+    private static final String defaultInventory = "";
+
+//    private static final String
 
     public static void setInventoryFile() {
         try {
@@ -85,5 +102,17 @@ public class FilesModel {
     public static File getInventoryFile() {
         setInventoryFile();
         return inventoryFile;
+    }
+
+    public static void setDefaultData() throws IOException {
+        FileWriter fileWriter1 = new FileWriter(FilesModel.getEntitiesFile(), false);
+        FileWriter fileWriter2 = new FileWriter(FilesModel.getItemsFile(), false);
+        FileWriter fileWriter3 = new FileWriter(FilesModel.getInventoryFile(), false);
+        fileWriter1.write(defaultEntities);
+        fileWriter2.write(defaultItems);
+        fileWriter3.write(defaultInventory);
+        fileWriter1.close();
+        fileWriter2.close();
+        fileWriter3.close();
     }
 }

@@ -1,14 +1,15 @@
-package tiles;
+package map;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import main.FilesModel;
-import main.GamePane;
+import main.Controller;
+import model.FilesModel;
+import model.GameModel;
 import main.MyLogger;
+import model.Tile;
 
 
 import java.io.*;
-import java.net.URL;
 
 /**
  * This class is for reading tiles,
@@ -16,20 +17,21 @@ import java.net.URL;
  * and drawing it on canvas
  */
 public class TileManager {
-    private GamePane gamePane;
+    GameModel gameModel = new GameModel();
+    private Controller controller;
     private Tile[] tiles;
     private int[][] mapTileNumbers;
     public int[][] getMapTileNumbers(){return mapTileNumbers;}
     public Tile[] getTilesList(){return tiles;}
 
-    public TileManager(GamePane gamePane) {
-        this.gamePane = gamePane;
+    public TileManager(Controller controller) {
+        this.controller = controller;
         try {
             getTiles();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        mapTileNumbers = new int[gamePane.getMaxWorldRow()][gamePane.getMaxWorldCol()];
+        mapTileNumbers = new int[gameModel.getMaxWorldRow()][gameModel.getMaxWorldCol()];
         fillMap(FilesModel.getMapFile());
     }
 
@@ -92,18 +94,18 @@ public class TileManager {
      * @param gc
      */
     public void draw(GraphicsContext gc) {
-        for (int row = 0; row < gamePane.getMaxWorldRow(); row++) {
-            for (int col = 0; col < gamePane.getMaxWorldCol(); col++) {
+        for (int row = 0; row < gameModel.getMaxWorldRow(); row++) {
+            for (int col = 0; col < gameModel.getMaxWorldCol(); col++) {
                 int index = mapTileNumbers[row][col];
-                int worldX = col * gamePane.getTileSize();
-                int worldY = row * gamePane.getTileSize();
+                int worldX = col * gameModel.getTileSize();
+                int worldY = row * gameModel.getTileSize();
                 // set where we should print title regarding the hero
-                int screenX = worldX - gamePane.player.getWorldX() + gamePane.player.getScreenX();
-                int screenY = worldY - gamePane.player.getWorldY() + gamePane.player.getScreenY();
+                int screenX = worldX - controller.player.getWorldX() + controller.player.getScreenX();
+                int screenY = worldY - controller.player.getWorldY() + controller.player.getScreenY();
                 // print only tiles which are on the screen
-                if ((screenX + gamePane.getTileSize() >= 0 && screenX - gamePane.getTileSize() <= gamePane.getScreenWidth()) &&
-                        (screenY + gamePane.getTileSize() >= 0 && screenY - gamePane.getTileSize() <= gamePane.getScreenHeight())) {
-                    gc.drawImage(tiles[index].image, screenX, screenY, gamePane.getTileSize(), gamePane.getTileSize());
+                if ((screenX + gameModel.getTileSize() >= 0 && screenX - gameModel.getTileSize() <= gameModel.getScreenWidth()) &&
+                        (screenY + gameModel.getTileSize() >= 0 && screenY - gameModel.getTileSize() <= gameModel.getScreenHeight())) {
+                    gc.drawImage(tiles[index].image, screenX, screenY, gameModel.getTileSize(), gameModel.getTileSize());
                 }
             }
         }

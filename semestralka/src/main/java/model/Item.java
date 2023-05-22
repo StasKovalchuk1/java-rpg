@@ -1,10 +1,6 @@
-package items;
+package model;
 
 import javafx.scene.image.Image;
-
-import main.*;
-import entities.*;
-import tiles.*;
 
 public abstract class Item {
     private boolean isOpened;
@@ -31,6 +27,5 @@ public abstract class Item {
     public void setIsOpened(boolean value) {
         isOpened = value;
     }
-
 
 }

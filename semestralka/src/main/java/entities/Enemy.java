@@ -1,10 +1,8 @@
 package entities;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import main.MyLogger;
 
 import java.util.Random;
 
@@ -18,7 +16,7 @@ public class Enemy extends Entity{
     private Rectangle visualRange;
     public Rectangle getVisualRange(){return visualRange;}
     public void setVisualRange(int range){
-        visualRange = new Rectangle(getWorldX() - range, getWorldY() - range, range * 2 + getGamePane().getTileSize(), range * 2 + getGamePane().getTileSize());
+        visualRange = new Rectangle(getWorldX() - range, getWorldY() - range, range * 2 + gameModel.getTileSize(), range * 2 + gameModel.getTileSize());
     }
 
     @Override
@@ -74,27 +72,27 @@ public class Enemy extends Entity{
     @Override
     public void checkCollisions() {
         setCollisionOn(false);
-        getGamePane().collisionCheck.checkTile(this);
-        getGamePane().collisionCheck.checkEntity(this, getGamePane().player);
-        if (isInVisualRange(visualRange, getGamePane().player.getHitbox())) {
+        controller().collisionCheck.checkTile(this);
+        controller().collisionCheck.checkEntity(this, controller().player);
+        if (isInVisualRange(visualRange, controller().player.getHitbox())) {
             getAttackHitbox().setX(getWorldX() + 8);
             getAttackHitbox().setY(getWorldY() + 8);
             changeAttackHitboxCoord();
-            getGamePane().collisionCheck.checkHit(this, getGamePane().player);
+            controller().collisionCheck.checkHit(this, controller().player);
         }
     }
 
     @Override
     public void draw(GraphicsContext gc){
         if (getAlive()){
-            setScreenX(getWorldX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
-            setScreenY(getWorldY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
+            setScreenX(getWorldX() - controller().player.getWorldX() + controller().player.getScreenX());
+            setScreenY(getWorldY() - controller().player.getWorldY() + controller().player.getScreenY());
             gc.setFill(Color.WHITE);
             gc.fillText("Lives : " + getLives(), getScreenX(), getScreenY() - 5);
-            if (!isInVisualRange(visualRange, getGamePane().player.getHitbox())) {
-                if ((getScreenX() + getGamePane().getTileSize() >= 0 && getScreenX() - getGamePane().getTileSize() <= getGamePane().getScreenWidth()) &&
-                        (getScreenY() + getGamePane().getTileSize() >= 0 && getScreenY() - getGamePane().getTileSize() <= getGamePane().getScreenHeight())) {
-                    gc.drawImage(getEntityImage(), getScreenX(), getScreenY(), getGamePane().getTileSize(), getGamePane().getTileSize());
+            if (!isInVisualRange(visualRange, controller().player.getHitbox())) {
+                if ((getScreenX() + gameModel.getTileSize() >= 0 && getScreenX() - gameModel.getTileSize() <= gameModel.getScreenWidth()) &&
+                        (getScreenY() + gameModel.getTileSize() >= 0 && getScreenY() - gameModel.getTileSize() <= gameModel.getScreenHeight())) {
+                    gc.drawImage(getEntityImage(), getScreenX(), getScreenY(), gameModel.getTileSize(), gameModel.getTileSize());
                 }
             } else {
                 attack(gc, getScreenX(), getScreenY());

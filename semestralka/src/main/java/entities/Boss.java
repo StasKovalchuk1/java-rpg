@@ -4,12 +4,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import main.GamePane;
+import main.Controller;
 
 public class Boss extends Enemy{
 
-    public Boss(GamePane gamePane, int row, int col, int lives){
-        setGamePane(gamePane);
+    public Boss(Controller controller, int row, int col, int lives){
+        setController(controller);
         setDefaultValues(row, col, lives);
         getEnemyImage();
         setHitbox(new Rectangle(getWorldX() + 16, getWorldY() + 32, 64, 64));
@@ -44,12 +44,12 @@ public class Boss extends Enemy{
      * @param col The column where enemy will be placed
      */
     private void setDefaultValues(int row, int col, int lives) {
-        setWorldX(col * getGamePane().getTileSize());
-        setWorldY(row * getGamePane().getTileSize());
+        setWorldX(col * gameModel.getTileSize());
+        setWorldY(row * gameModel.getTileSize());
         setLives(lives);
         setSpeed(1);
         setDirection("UP");
-        setRange(getGamePane().getTileSize());
+        setRange(gameModel.getTileSize());
         setVisualRange(getRange() * 2);
     }
 
@@ -72,14 +72,14 @@ public class Boss extends Enemy{
     @Override
     public void draw(GraphicsContext gc){
         if (getAlive()){
-            setScreenX(getWorldX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
-            setScreenY(getWorldY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
+            setScreenX(getWorldX() - controller().player.getWorldX() + controller().player.getScreenX());
+            setScreenY(getWorldY() - controller().player.getWorldY() + controller().player.getScreenY());
             gc.setFill(Color.WHITE);
             gc.fillText("Lives : " + getLives(), getScreenX() + 20, getScreenY() - 5);
-            if (!isInVisualRange(getVisualRange(), getGamePane().player.getHitbox())) {
-                if ((getScreenX() + getGamePane().getTileSize() >= 0 && getScreenX() - getGamePane().getTileSize() <= getGamePane().getScreenWidth()) &&
-                        (getScreenY() + getGamePane().getTileSize() >= 0 && getScreenY() - getGamePane().getTileSize() <= getGamePane().getScreenHeight())) {
-                    gc.drawImage(getEntityImage(), getScreenX(), getScreenY(), getGamePane().getTileSize() * 2, getGamePane().getTileSize() * 2);
+            if (!isInVisualRange(getVisualRange(), controller().player.getHitbox())) {
+                if ((getScreenX() + gameModel.getTileSize() >= 0 && getScreenX() - gameModel.getTileSize() <= gameModel.getScreenWidth()) &&
+                        (getScreenY() + gameModel.getTileSize() >= 0 && getScreenY() - gameModel.getTileSize() <= gameModel.getScreenHeight())) {
+                    gc.drawImage(getEntityImage(), getScreenX(), getScreenY(), gameModel.getTileSize() * 2, gameModel.getTileSize() * 2);
 //                    int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
 //                    int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
 //                    gc.setStroke(Color.WHITE);

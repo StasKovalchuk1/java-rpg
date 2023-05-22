@@ -1,6 +1,7 @@
 package items;
 
 import javafx.scene.image.Image;
+import model.Item;
 
 public class Shield extends Item {
     public Shield(String name, Image image, Integer worldX, Integer worldY, boolean insideChest){

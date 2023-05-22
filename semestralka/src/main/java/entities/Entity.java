@@ -3,11 +3,13 @@ package entities;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
-import main.GamePane;
-import main.SoundManager;
+import main.Controller;
+import model.GameModel;
+import model.SoundManager;
 
 public abstract class Entity {
-    private GamePane gamePane;
+    GameModel gameModel = new GameModel();
+    private Controller controller;
     private int lives;
     private int worldX, worldY, screenX, screenY;
     private int heightInTiles, widthInTiles;
@@ -172,12 +174,12 @@ public abstract class Entity {
         this.entityImage = entityImage;
     }
 
-    public GamePane getGamePane() {
-        return gamePane;
+    public Controller controller() {
+        return controller;
     }
 
-    public void setGamePane(GamePane gamePane) {
-        this.gamePane = gamePane;
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 
     public int getSpriteNum() {
@@ -317,7 +319,7 @@ public abstract class Entity {
      * @param gc
      */
     public void drawImageDefend(GraphicsContext gc) {
-        gc.drawImage(getEntityImage(), getScreenX(), getScreenY(), getGamePane().getTileSize(), getGamePane().getTileSize());
+        gc.drawImage(getEntityImage(), getScreenX(), getScreenY(), gameModel.getTileSize(), gameModel.getTileSize());
     }
 
     /**
@@ -382,23 +384,23 @@ public abstract class Entity {
             case "UP":
                 gc.drawImage(getEntityImage(),
                         screenX,
-                        screenY - ((getGamePane().getTileSize() * getHeightInTiles()) * 0.5),
-                        getGamePane().getTileSize() * getWidthInTiles(),
-                        getGamePane().getTileSize() * getHeightInTiles());
+                        screenY - ((gameModel.getTileSize() * getHeightInTiles()) * 0.5),
+                        gameModel.getTileSize() * getWidthInTiles(),
+                        gameModel.getTileSize() * getHeightInTiles());
                 break;
             case "DOWN", "RIGHT":
                 gc.drawImage(getEntityImage(),
                         screenX,
                         screenY,
-                        getGamePane().getTileSize() * getWidthInTiles(),
-                        getGamePane().getTileSize() * getHeightInTiles());
+                        gameModel.getTileSize() * getWidthInTiles(),
+                        gameModel.getTileSize() * getHeightInTiles());
                 break;
             case "LEFT":
                 gc.drawImage(getEntityImage(),
-                        screenX - ((getGamePane().getTileSize() * getWidthInTiles()) * 0.5),
+                        screenX - ((gameModel.getTileSize() * getWidthInTiles()) * 0.5),
                         screenY,
-                        getGamePane().getTileSize() * getWidthInTiles(),
-                        getGamePane().getTileSize() * getHeightInTiles());
+                        gameModel.getTileSize() * getWidthInTiles(),
+                        gameModel.getTileSize() * getHeightInTiles());
                 break;
         }
     }
@@ -447,13 +449,13 @@ public abstract class Entity {
                     if (worldY - speed >= 0) worldY -= speed;
                     break;
                 case "DOWN":
-                    if (worldY + speed <= gamePane.getWorldHeight()) worldY += speed;
+                    if (worldY + speed <= gameModel.getWorldHeight()) worldY += speed;
                     break;
                 case "LEFT":
                     if (worldX - speed >= 0) worldX -= speed;
                     break;
                 case "RIGHT":
-                    if (worldX + speed <= gamePane.getWorldWidth()) worldX += speed;
+                    if (worldX + speed <= gameModel.getWorldWidth()) worldX += speed;
                     break;
             }
         }

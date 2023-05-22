@@ -1,7 +1,6 @@
-package tiles;
+package model;
 
 import javafx.scene.image.Image;
-import javafx.scene.shape.Rectangle;
 
 public class Tile {
 

@@ -1,2 +1,4 @@
 chest 42 40 false
 shield -1 -24 true
+key 8 8 false
+sword 42 2 false

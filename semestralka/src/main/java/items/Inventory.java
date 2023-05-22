@@ -1,15 +1,16 @@
-package entities;
+package items;
 
 import items.*;
-import main.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import main.Controller;
+import model.FilesModel;
+import model.Item;
+import model.GameModel;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class Inventory {
@@ -20,15 +21,17 @@ public class Inventory {
     public int getMaxListSize() {
         return maxListSize;
     }
-    private GamePane gamePane;
+    GameModel gameModel = new GameModel();
+
+    Controller controller;
     private Boolean inventoryIsFull = false;
     private int borderWidth = 5;
     private int fontSize = 18;
     private String title = "My Inventory";
     private Font titleFont = new Font("Tiempos Text", fontSize);
 
-    public Inventory(GamePane gamePane) {
-        this.gamePane = gamePane;
+    public Inventory(Controller controller) {
+        this.controller = controller;
     }
 
     /**
@@ -61,12 +64,12 @@ public class Inventory {
      * @param gc
      */
     public void draw(GraphicsContext gc) {
-        if (gamePane.keyHandler.inventoryPressed) {
+        if (controller.keyHandler.inventoryPressed) {
             gc.setFill(Color.rgb(20, 20, 20, 0.7));
             gc.setStroke(Color.WHITE);
             gc.setLineWidth(borderWidth);
-            gc.fillRect(5, 5, gamePane.getTileSize() * 5 + borderWidth, gamePane.getTileSize() * 3 + borderWidth + fontSize);
-            gc.strokeRect(5, 5, gamePane.getTileSize() * 5 + borderWidth, gamePane.getTileSize() * 3 + borderWidth + fontSize);
+            gc.fillRect(5, 5, gameModel.getTileSize() * 5 + borderWidth, gameModel.getTileSize() * 3 + borderWidth + fontSize);
+            gc.strokeRect(5, 5, gameModel.getTileSize() * 5 + borderWidth, gameModel.getTileSize() * 3 + borderWidth + fontSize);
 
             gc.setFont(titleFont);
             gc.setFill(Color.WHITE);
@@ -75,9 +78,9 @@ public class Inventory {
             int col = 0;
             int i = 0;
             while (i < list.size()){
-                int inventoryScreenX = col * gamePane.getTileSize() + borderWidth * 2;
-                int inventoryScreenY = row * gamePane.getTileSize() + borderWidth * 2 + fontSize;
-                gc.drawImage(list.get(i).getImage(), inventoryScreenX, inventoryScreenY, gamePane.getTileSize(), gamePane.getTileSize());
+                int inventoryScreenX = col * gameModel.getTileSize() + borderWidth * 2;
+                int inventoryScreenY = row * gameModel.getTileSize() + borderWidth * 2 + fontSize;
+                gc.drawImage(list.get(i).getImage(), inventoryScreenX, inventoryScreenY, gameModel.getTileSize(), gameModel.getTileSize());
                 col++;
                 i++;
                 if (col == 5) {
@@ -144,5 +147,10 @@ public class Inventory {
             }
         }
         fileWriter.close();
+    }
+
+    public void resetInventory() throws IOException {
+        list.clear();
+        setInventory();
     }
 }

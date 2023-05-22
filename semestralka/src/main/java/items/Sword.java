@@ -1,6 +1,7 @@
 package items;
 
 import javafx.scene.image.Image;
+import model.Item;
 
 public class Sword extends Item {
 

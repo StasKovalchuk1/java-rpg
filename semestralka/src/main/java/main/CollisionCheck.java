@@ -2,17 +2,21 @@ package main;
 
 import entities.*;
 import items.*;
+import model.Item;
+import model.GameModel;
+import model.SoundManager;
 
 /**
  * This class is for checking collisions
  */
 public class CollisionCheck {
-    GamePane gamePane;
+    GameModel gameModel =new GameModel();
+    Controller controller;
     Chest chest = null;
 
-    public CollisionCheck(GamePane gamePane) {
-        this.gamePane = gamePane;
-        for (Item item : gamePane.itemManager.getAllItems()){
+    public CollisionCheck(Controller controller) {
+        this.controller = controller;
+        for (Item item : controller.itemManager.getAllItems()){
             if (item instanceof Chest) chest = (Chest) item;
         }
     }
@@ -27,46 +31,46 @@ public class CollisionCheck {
         int rectTopY = (int) entity.getHitbox().getY();
         int rectBottomY = (int) (entity.getHitbox().getY() + entity.getHitbox().getHeight());
 
-        int rowOfTop = rectTopY / gamePane.getTileSize();
-        int colOfLeft = rectLeftX / gamePane.getTileSize();
-        int colOfRight = rectRightX / gamePane.getTileSize();
-        int rowOfBottom = rectBottomY/ gamePane.getTileSize();
+        int rowOfTop = rectTopY / gameModel.getTileSize();
+        int colOfLeft = rectLeftX / gameModel.getTileSize();
+        int colOfRight = rectRightX / gameModel.getTileSize();
+        int rowOfBottom = rectBottomY/ gameModel.getTileSize();
 
         try {
             switch (entity.getDirection()) {
                 case "UP" -> {
-                    rowOfTop = (rectTopY - entity.getSpeed()) / gamePane.getTileSize();
-                    if (gamePane.tileManager.getTilesList()[getValue(rowOfTop, colOfLeft)].solid
-                            || gamePane.tileManager.getTilesList()[getValue(rowOfTop, colOfRight)].solid
-                                    || (rowOfTop == chest.getWorldY() / gamePane.getTileSize() &&
-                                        (colOfRight == chest.getWorldX() / gamePane.getTileSize() || colOfLeft == chest.getWorldX() / gamePane.getTileSize()))) {
+                    rowOfTop = (rectTopY - entity.getSpeed()) / gameModel.getTileSize();
+                    if (controller.tileManager.getTilesList()[getValue(rowOfTop, colOfLeft)].solid
+                            || controller.tileManager.getTilesList()[getValue(rowOfTop, colOfRight)].solid
+                                    || (rowOfTop == chest.getWorldY() / gameModel.getTileSize() &&
+                                        (colOfRight == chest.getWorldX() / gameModel.getTileSize() || colOfLeft == chest.getWorldX() / gameModel.getTileSize()))) {
                         entity.setCollisionOn(true);
                     }
                 }
                 case "DOWN" -> {
-                    rowOfBottom = (rectBottomY + entity.getSpeed()) / gamePane.getTileSize();
-                    if (gamePane.tileManager.getTilesList()[getValue(rowOfBottom, colOfLeft)].solid
-                            || gamePane.tileManager.getTilesList()[getValue(rowOfBottom, colOfRight)].solid
-                                || (rowOfBottom == chest.getWorldY() / gamePane.getTileSize()
-                                    && (colOfRight == chest.getWorldX() / gamePane.getTileSize() || colOfLeft == chest.getWorldX() / gamePane.getTileSize()))) {
+                    rowOfBottom = (rectBottomY + entity.getSpeed()) / gameModel.getTileSize();
+                    if (controller.tileManager.getTilesList()[getValue(rowOfBottom, colOfLeft)].solid
+                            || controller.tileManager.getTilesList()[getValue(rowOfBottom, colOfRight)].solid
+                                || (rowOfBottom == chest.getWorldY() / gameModel.getTileSize()
+                                    && (colOfRight == chest.getWorldX() / gameModel.getTileSize() || colOfLeft == chest.getWorldX() / gameModel.getTileSize()))) {
                         entity.setCollisionOn(true);
                     }
                 }
                 case "LEFT" -> {
-                    colOfLeft = (rectLeftX - entity.getSpeed()) / gamePane.getTileSize();
-                    if (gamePane.tileManager.getTilesList()[getValue(rowOfTop, colOfLeft)].solid
-                            || gamePane.tileManager.getTilesList()[getValue(rowOfBottom, colOfLeft)].solid
-                                || (colOfLeft == chest.getWorldX() / gamePane.getTileSize()
-                                    && (rowOfBottom == chest.getWorldY() / gamePane.getTileSize() || rowOfTop == chest.getWorldY() / gamePane.getTileSize()))) {
+                    colOfLeft = (rectLeftX - entity.getSpeed()) / gameModel.getTileSize();
+                    if (controller.tileManager.getTilesList()[getValue(rowOfTop, colOfLeft)].solid
+                            || controller.tileManager.getTilesList()[getValue(rowOfBottom, colOfLeft)].solid
+                                || (colOfLeft == chest.getWorldX() / gameModel.getTileSize()
+                                    && (rowOfBottom == chest.getWorldY() / gameModel.getTileSize() || rowOfTop == chest.getWorldY() / gameModel.getTileSize()))) {
                         entity.setCollisionOn(true);
                     }
                 }
                 case "RIGHT" -> {
-                    colOfRight = (rectRightX + entity.getSpeed()) / gamePane.getTileSize();
-                    if (gamePane.tileManager.getTilesList()[getValue(rowOfTop, colOfRight)].solid
-                            || gamePane.tileManager.getTilesList()[getValue(rowOfBottom, colOfRight)].solid
-                                || (colOfRight == chest.getWorldX() / gamePane.getTileSize()
-                                    && (rowOfBottom == chest.getWorldY() / gamePane.getTileSize() || rowOfTop == chest.getWorldY() / gamePane.getTileSize()))) {
+                    colOfRight = (rectRightX + entity.getSpeed()) / gameModel.getTileSize();
+                    if (controller.tileManager.getTilesList()[getValue(rowOfTop, colOfRight)].solid
+                            || controller.tileManager.getTilesList()[getValue(rowOfBottom, colOfRight)].solid
+                                || (colOfRight == chest.getWorldX() / gameModel.getTileSize()
+                                    && (rowOfBottom == chest.getWorldY() / gameModel.getTileSize() || rowOfTop == chest.getWorldY() / gameModel.getTileSize()))) {
                         entity.setCollisionOn(true);
                     }
                 }
@@ -83,7 +87,7 @@ public class CollisionCheck {
      * @return Tile's value
      */
     private int getValue(int row, int col) {
-        return gamePane.tileManager.getMapTileNumbers()[row][col];
+        return controller.tileManager.getMapTileNumbers()[row][col];
     }
 
     /**
@@ -91,13 +95,13 @@ public class CollisionCheck {
      * @param entity Your entity that you check on collision
      */
     public void checkItem(Entity entity) {
-        for (Item item : gamePane.itemManager.getAllItems()) {
+        for (Item item : controller.itemManager.getAllItems()) {
             // if we have collision with an item then we take it
-            if ((entity.getHitbox().intersects(item.getWorldX(), item.getWorldY(), gamePane.getTileSize(), gamePane.getTileSize()))
-                && !item.getIsTaken() && (gamePane.inventory.getInventory().size() < gamePane.inventory.getMaxListSize())){
+            if ((entity.getHitbox().intersects(item.getWorldX(), item.getWorldY(), gameModel.getTileSize(), gameModel.getTileSize()))
+                && !item.getIsTaken() && (controller.inventory.getInventory().size() < controller.inventory.getMaxListSize())){
                     if (!item.getName().equals("chest")){
                         item.setIsTaken(true);
-                        gamePane.inventory.getInventory().add(item);
+                        controller.inventory.getInventory().add(item);
                         SoundManager.playTakeItemSound();
                     }
             }
@@ -110,14 +114,14 @@ public class CollisionCheck {
      */
     public void checkChest(Entity entity) {
         if (chest != null) {
-            if (entity.getHitbox().intersects(chest.getWorldX() - gamePane.getTileSize() * 0.5, chest.getWorldY() - gamePane.getTileSize() * 0.5, gamePane.getTileSize() * 2, gamePane.getTileSize() * 2)
-                    && !chest.getIsOpened() && gamePane.keyHandler.chestPressed) {
-                for (Item item : gamePane.inventory.getInventory()) {
+            if (entity.getHitbox().intersects(chest.getWorldX() - gameModel.getTileSize() * 0.5, chest.getWorldY() - gameModel.getTileSize() * 0.5, gameModel.getTileSize() * 2, gameModel.getTileSize() * 2)
+                    && !chest.getIsOpened() && controller.keyHandler.chestPressed) {
+                for (Item item : controller.inventory.getInventory()) {
                     if (item.getName().equals("key")) {
                         chest.setIsOpened(true);
-                        gamePane.inventory.getInventory().remove(item);
+                        controller.inventory.getInventory().remove(item);
                         for (Item itemInside : chest.inside) {
-                            if (gamePane.inventory.getInventory().size() < gamePane.inventory.getMaxListSize())  gamePane.inventory.getInventory().add(itemInside);
+                            if (controller.inventory.getInventory().size() < controller.inventory.getMaxListSize())  controller.inventory.getInventory().add(itemInside);
                         }
                         break;
                     }

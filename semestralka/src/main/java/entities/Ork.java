@@ -2,12 +2,12 @@ package entities;
 
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
-import main.GamePane;
+import main.Controller;
 
 
 public class Ork extends Enemy{
-    public Ork(GamePane gamePane, int row, int col, int lives) {
-        setGamePane(gamePane);
+    public Ork(Controller controller, int row, int col, int lives) {
+        setController(controller);
         setDefaultValues(row, col, lives);
         getEnemyImage();
         setHitbox(new Rectangle(getWorldX() + 8, getWorldY() + 16, 32, 32));
@@ -42,12 +42,12 @@ public class Ork extends Enemy{
      * @param col The column where enemy will be placed
      */
     private void setDefaultValues(int row, int col, int lives) {
-        setWorldX(col * getGamePane().getTileSize());
-        setWorldY(row * getGamePane().getTileSize());
+        setWorldX(col * gameModel.getTileSize());
+        setWorldY(row * gameModel.getTileSize());
         setSpeed(1);
         setDirection("UP");
         setLives(lives);
-        setRange(getGamePane().getTileSize());
+        setRange(gameModel.getTileSize());
         setVisualRange(getRange());
     }
 

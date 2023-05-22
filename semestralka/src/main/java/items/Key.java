@@ -2,6 +2,7 @@ package items;
 
 
 import javafx.scene.image.Image;
+import model.Item;
 
 public class Key extends Item {
     public Key(String name, Image image, Integer worldX, Integer worldY, boolean insideChest){
