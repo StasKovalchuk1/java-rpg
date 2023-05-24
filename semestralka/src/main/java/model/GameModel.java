@@ -17,7 +17,17 @@ public class GameModel extends Canvas{
     private final int maxWorldRow = 50;
     private final int worldWidth = tileSize * maxWorldRow;
     private final int worldHeight = tileSize * maxWorldCol;
+    private int infoWindowCount = 0;
 
+    public int getInfoWindowCount() {return infoWindowCount;}
+
+    public void setInfoWindowCount(int infoWindowCount) {
+        this.infoWindowCount = infoWindowCount;
+    }
+
+    public void increaseInfoWindowCount() {
+        setInfoWindowCount(getInfoWindowCount() + 1);
+    }
     private boolean gameOver = false;
     public boolean isGameOver() {return gameOver;}
     public void setGameOver(boolean gameOver) {this.gameOver = gameOver;}
@@ -32,32 +42,5 @@ public class GameModel extends Canvas{
     public int getMaxScreenCol(){return maxScreenCol;}
     public int getMaxScreenRow(){return maxWorldRow;}
 
-//    public MyTimer myTimer = new MyTimer(this);
-//    public KeyHandler keyHandler = new KeyHandler();
-//    public TileManager tileManager = new TileManager(this);
-//    public ItemManager itemManager = new ItemManager(this);
-//    public Inventory inventory = new Inventory(this);
-//    public Player player = new Player(this, keyHandler);
-//    public EnemiesList enemiesList = new EnemiesList(this);
-//    public CollisionCheck collisionCheck = new CollisionCheck(this);
-//
-//    public Model() throws IOException {
-//        setWidth(screenWidth);
-//        setHeight(screenHeight);
-//        this.setOnKeyPressed(keyHandler);
-//        this.setOnKeyReleased(keyHandler);
-//        this.requestFocus();
-//    }
-//
-//    public void startGameThread() {
-//        myTimer.start();
-//    }
-//
-//    public void saveGame() throws IOException {
-//        itemManager.saveItems();
-//        inventory.saveInventory();
-//        player.savePlayer();
-//        enemiesList.saveEnemies();
-//    }
 
 }

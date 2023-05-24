@@ -218,6 +218,9 @@ public abstract class Entity {
         this.attackHitbox = attackHitbox;
     }
 
+    /**
+     * Set width and height depending on type of entity
+     */
     public void setWidthAndHeight() {
         switch (getDirection()) {
             case "UP", "DOWN":
@@ -477,7 +480,7 @@ public abstract class Entity {
     }
 
     /**
-     *
+     * To play block hit sound
      */
     public void blockHitProcess() {
         if (defendCounter == 5) SoundManager.playHitShieldSound();

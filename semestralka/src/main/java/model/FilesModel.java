@@ -24,10 +24,10 @@ public class FilesModel {
     private static File entitiesFile;
     private static File inventoryFile;
 
-    private static final String defaultEntities = "hero 24 24 15\n" +
-            "boss 5 45 3\n" +
-            "ork 42 42 2\n" +
-            "ork 42 3 2";
+    private static final String defaultEntities = "hero 24 24 5\n" +
+            "boss 5 45 5\n" +
+            "ork 42 42 3\n" +
+            "ork 42 3 3";
 
     private static final String defaultItems = "chest 42 40 false\n" +
             "shield -1 -24 true\n" +

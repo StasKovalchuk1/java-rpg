@@ -39,10 +39,16 @@ public class Controller extends Canvas {
         this.stage = stage;
     }
 
+    public Controller() throws IOException {}
+
     public void startGameThread() {
         myTimer.start();
     }
 
+    /**
+     * Start all process to save the game
+     * @throws IOException
+     */
     public void saveGame() throws IOException {
         itemManager.saveItems();
         inventory.saveInventory();
@@ -50,7 +56,11 @@ public class Controller extends Canvas {
         enemiesList.saveEnemies();
     }
 
-    public boolean setGameOver() {
+    /**
+     * Check if game is over
+     * @return
+     */
+    public boolean checkGameOver() {
         if (!player.getAlive()) return true;
         for (Enemy enemy : enemiesList.getEnemiesList()) {
             if (enemy.getAlive()) return false;
@@ -58,7 +68,10 @@ public class Controller extends Canvas {
         return true;
     }
 
-    public void checkGameOver() {
+    /**
+     * Shou popup window when game is over
+     */
+    public void gameOver() {
         if (gameModel.isGameOver()) {
             Platform.runLater(() -> {
                 myTimer.stop();
@@ -95,6 +108,10 @@ public class Controller extends Canvas {
         }
     }
 
+    /**
+     * Start processes to reset the game
+     * @throws IOException
+     */
     public void resetGame() throws IOException {
         itemManager.resetItems();
         inventory.resetInventory();

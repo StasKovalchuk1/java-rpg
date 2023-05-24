@@ -24,6 +24,8 @@ public class EnemiesList {
         setEnemiesList();
     }
 
+    public EnemiesList(){}
+
     /**
      * Reads enemies from the file and add it to the list
      * @throws IOException
@@ -80,6 +82,11 @@ public class EnemiesList {
         fileWriter.close();
     }
 
+    /**
+     * Delete all enemies from the list
+     * and set them again
+     * @throws IOException
+     */
     public void resetEnemies() throws IOException {
         enemiesList.clear();
         setEnemiesList();

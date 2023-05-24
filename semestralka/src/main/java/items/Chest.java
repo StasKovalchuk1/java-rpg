@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chest extends Item {
-    public List<Item> inside = new ArrayList<>();
+    private List<Item> itemsInside = new ArrayList<>();
     public boolean isOpened = false;
 
     public Chest(String name, Image image, int worldX, int worldY, boolean insideChest){
@@ -25,4 +25,11 @@ public class Chest extends Item {
         isOpened = value;
     }
 
+    public List<Item> getItemsInside() {
+        return itemsInside;
+    }
+
+    public void setItemsInside(List<Item> itemsInside) {
+        this.itemsInside = itemsInside;
+    }
 }

@@ -31,7 +31,7 @@ public class ItemManager {
      * Gets items and adds them to the hashmap
      * @throws IOException
      */
-    private void getItems() throws IOException {
+    public void getItems() throws IOException {
         MyLogger.getMyLogger().info("Loading the items");
         FileReader fileReader = new FileReader(FilesModel.getItemsFile());
         BufferedReader reader = new BufferedReader(fileReader);
@@ -65,12 +65,13 @@ public class ItemManager {
             }
             for (Item item : items) {
                 if (item.getInsideChest() && chest != null) {
-                    chest.inside.add(item);
+                    chest.getItemsInside().add(item);
                 }
             }
             MyLogger.getMyLogger().info("Items are loaded");
         } catch (Exception e){
-            MyLogger.getMyLogger().severe("Exception ::" + e);
+            MyLogger.getMyLogger().severe("Loading items FAILED : " + e);
+            e.printStackTrace();
         }
     }
 
@@ -98,6 +99,10 @@ public class ItemManager {
         }
     }
 
+    /**
+     * Save all not taken items on the map to the file
+     * @throws IOException
+     */
     public void saveItems() throws IOException {
         FileWriter fileWriter = new FileWriter(FilesModel.getItemsFile(), false);
         for (Item item : items) {
@@ -116,6 +121,11 @@ public class ItemManager {
         fileWriter.close();
     }
 
+    /**
+     * Delete all items from the items list
+     * and set them again
+     * @throws IOException
+     */
     public void resetItems() throws IOException {
         items.clear();
         getItems();

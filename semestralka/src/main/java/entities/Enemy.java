@@ -108,7 +108,7 @@ public class Enemy extends Entity{
 
 
     /**
-     *
+     * Check if the target is in visual range
      * @param visualRange
      * @param target
      * @return

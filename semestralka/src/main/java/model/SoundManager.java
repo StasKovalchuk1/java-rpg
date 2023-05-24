@@ -7,8 +7,7 @@ import java.io.File;
 import java.net.URL;
 
 public class SoundManager {
-
-    private static final String getHitSoundFileName = "sounds/get_hit_blya.wav";
+    private static final String getHitSoundFileName = "sounds/get_hit.wav";
     private static final String hitSoundFileName = "sounds/hit.wav";
     private static final String hitShieldSoundFileName = "sounds/hit_shield.wav";
     private static final String takeItemSoundFileName = "sounds/take_item.wav";
@@ -17,18 +16,19 @@ public class SoundManager {
     private static final URL resourceToHitShieldSound = SoundManager.class.getClassLoader().getResource(hitShieldSoundFileName);
     private static final URL resourceToTakeItemSound = SoundManager.class.getClassLoader().getResource(takeItemSoundFileName);
 
+    /**
+     * Play the sound from the file
+     * @param sourceFile file with the sound
+     */
     public static void play(URL sourceFile) {
         new Thread(() -> {
             try {
-                // load audio file
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(sourceFile.toURI()));
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
 
-                // start play the sound
                 clip.start();
 
-                // wait the end of playing
                 clip.addLineListener(event -> {
                     if (event.getType() == LineEvent.Type.STOP) {
                         clip.close();

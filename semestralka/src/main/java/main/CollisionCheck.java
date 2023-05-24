@@ -6,6 +6,11 @@ import model.Item;
 import model.GameModel;
 import model.SoundManager;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * This class is for checking collisions
  */
@@ -20,6 +25,8 @@ public class CollisionCheck {
             if (item instanceof Chest) chest = (Chest) item;
         }
     }
+
+    public CollisionCheck() {}
 
     /**
      * Check collision entity with solid tiles
@@ -116,16 +123,32 @@ public class CollisionCheck {
         if (chest != null) {
             if (entity.getHitbox().intersects(chest.getWorldX() - gameModel.getTileSize() * 0.5, chest.getWorldY() - gameModel.getTileSize() * 0.5, gameModel.getTileSize() * 2, gameModel.getTileSize() * 2)
                     && !chest.getIsOpened() && controller.keyHandler.chestPressed) {
-                for (Item item : controller.inventory.getInventory()) {
+//                for (Item item : controller.inventory.getInventory()) {
+//                    if (item.getName().equals("key")) {
+//                        chest.setIsOpened(true);
+//                        controller.inventory.getInventory().remove(item);
+//                        for (Item itemInside : chest.getItemsInside()) {
+//                            if (controller.inventory.getInventory().size() < controller.inventory.getMaxListSize())  controller.inventory.getInventory().add(itemInside);
+//                        }
+//                        break;
+//                    }
+//                }
+                ArrayList<Item> inventory = controller.inventory.getInventory();
+                Iterator<Item> iterator = controller.inventory.getInventory().iterator();
+                while (iterator.hasNext()) {
+                    Item item = iterator.next();
                     if (item.getName().equals("key")) {
                         chest.setIsOpened(true);
-                        controller.inventory.getInventory().remove(item);
-                        for (Item itemInside : chest.inside) {
-                            if (controller.inventory.getInventory().size() < controller.inventory.getMaxListSize())  controller.inventory.getInventory().add(itemInside);
+                        iterator.remove();
+                        for (Item itemInside : chest.getItemsInside()) {
+                            if (inventory.size() < controller.inventory.getMaxListSize()) {
+                                inventory.add(itemInside);
+                            }
                         }
                         break;
                     }
                 }
+                controller.inventory.setInventory(inventory);
             }
         }
     }

@@ -14,6 +14,15 @@ public class Player extends Entity {
 
     private Controller controller;
 
+    public Player(KeyHandler keyHandler){
+        this.keyHandler = keyHandler;
+        try {
+            controller = new Controller();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Player(Controller controller, KeyHandler keyHandler) throws IOException {
         this.controller = controller;
         this.keyHandler = keyHandler;
@@ -88,7 +97,7 @@ public class Player extends Entity {
     /**
      *
      */
-    private void handleMoving(){
+    public void handleMoving(){
         if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed
                 || keyHandler.rightPressed) {
             if (keyHandler.upPressed) {
@@ -122,7 +131,7 @@ public class Player extends Entity {
      */
     public void interactionWithObjects() {
         if (keyHandler.chestPressed) {
-            controller().collisionCheck.checkChest(this);
+            controller.collisionCheck.checkChest(this);
         }
         if ((keyHandler.attackPressed && controller.inventory.checkSwordInList()) || isAttacking()) {
             setAttacking(true);
@@ -203,12 +212,6 @@ public class Player extends Entity {
     }
 
     public void resetPlayer() throws IOException {
-//        setScreenX(gameModel.getScreenWidth() / 2 - (gameModel.getTileSize() / 2));
-//        setScreenY(gameModel.getScreenHeight() / 2 - (gameModel.getTileSize() / 2));
-//        setDefaultValues();
-//        getPlayerImage();
-//        setHitbox(new Rectangle(getWorldX() + 8, getWorldY() + 16, 32, 32));
-//        setAttackHitbox(new Rectangle(getWorldX() + 8, getWorldY() + 16, 32, 32));
         setAlive(true);
         setDefaultValues();
         getPlayerImage();
@@ -221,3 +224,4 @@ public class Player extends Entity {
         }
     }
 }
+

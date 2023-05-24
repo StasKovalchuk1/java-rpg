@@ -85,7 +85,8 @@ public class TileManager {
             }
             MyLogger.getMyLogger().info("Map is loaded");
         } catch (Exception e) {
-            MyLogger.getMyLogger().severe("Exception ::" + e);
+            MyLogger.getMyLogger().severe("Loading map FAILED : " + e);
+            e.printStackTrace();
         }
     }
 

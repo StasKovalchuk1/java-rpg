@@ -1,6 +1,5 @@
 package items;
 
-import items.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -12,11 +11,17 @@ import model.GameModel;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Inventory {
 
     private ArrayList<Item> list = new ArrayList<>();
     public ArrayList<Item> getInventory() {return list;}
+
+    public void setInventory(ArrayList<Item> list) {
+        this.list = list;
+    }
+
     private int maxListSize = 15;
     public int getMaxListSize() {
         return maxListSize;
@@ -35,7 +40,7 @@ public class Inventory {
     }
 
     /**
-     *
+     * Set inventory from the file
      * @throws IOException
      */
     public void setInventory() throws IOException {
@@ -60,7 +65,7 @@ public class Inventory {
     }
 
     /**
-     *
+     * Draws inventory menu on the canvas
      * @param gc
      */
     public void draw(GraphicsContext gc) {
@@ -92,7 +97,7 @@ public class Inventory {
     }
 
     /**
-     *
+     * Check if sword is in the inventory
      * @return
      */
     public Boolean checkSwordInList(){
@@ -103,18 +108,7 @@ public class Inventory {
     }
 
     /**
-     *
-     * @return
-     */
-    public Boolean checkChestInList(){
-        for (Item item : list){
-            if (item instanceof Chest) return true;
-        }
-        return false;
-    }
-
-    /**
-     *
+     * Check if key is in the inventory
      * @return
      */
     public Boolean checkKeyInList(){
@@ -125,7 +119,7 @@ public class Inventory {
     }
 
     /**
-     *
+     * Check if shield is in the inventory
      * @return
      */
     public Boolean checkShieldInList(){
@@ -135,6 +129,10 @@ public class Inventory {
         return false;
     }
 
+    /**
+     * Save all items from inventory to the file
+     * @throws IOException
+     */
     public void saveInventory() throws IOException {
         FileWriter fileWriter = new FileWriter(FilesModel.getInventoryFile(), false);
         for (Item item : list) {
@@ -149,6 +147,11 @@ public class Inventory {
         fileWriter.close();
     }
 
+    /**
+     * Delete all items from the inventory
+     * and set them again
+     * @throws IOException
+     */
     public void resetInventory() throws IOException {
         list.clear();
         setInventory();
