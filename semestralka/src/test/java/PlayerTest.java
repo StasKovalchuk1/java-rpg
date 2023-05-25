@@ -1,14 +1,17 @@
 import entities.Player;
+import items.ItemManager;
 import items.Key;
 import main.CollisionCheck;
 import main.Controller;
 import main.KeyHandler;
+import map.TileManager;
 import model.GameModel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import static org.mockito.Mockito.*;
 
@@ -16,21 +19,16 @@ import static org.mockito.Mockito.*;
  * Test if player can move
  */
 public class PlayerTest {
-    private static Player player;
-    private static final KeyHandler keyHandler = new KeyHandler();
-    private GameModel gameModel = new GameModel();
-    private static CollisionCheck collisionCheck;
-    private static Controller controller;
 
     @Test
-    public void testHandleMoving() {
-        collisionCheck = mock(CollisionCheck.class);
-        controller = mock(Controller.class);
-        player = new Player(keyHandler);
+    public void testHandleMoving() throws Exception {
+        KeyHandler keyHandler = new KeyHandler();
+        Player player = new Player(keyHandler);
 
-        doNothing().when(collisionCheck).checkTile(player);
-        doNothing().when(collisionCheck).checkEntity(player, player);
-        doNothing().when(collisionCheck).checkItem(player);
+        Field keyHandlerField = Player.class.getDeclaredField("keyHandler");
+        keyHandlerField.setAccessible(true);
+        keyHandlerField.set(player, keyHandler);
+
         player.setSpeed(5);
 
         // move UP
@@ -41,7 +39,6 @@ public class PlayerTest {
         keyHandler.downPressed = false;
         keyHandler.rightPressed = false;
         keyHandler.leftPressed = false;
-
 
         player.handleMoving();
 
@@ -90,6 +87,5 @@ public class PlayerTest {
         Assertions.assertEquals(20, player.getWorldY());
         Assertions.assertEquals(15, player.getWorldX());
     }
-
 
 }

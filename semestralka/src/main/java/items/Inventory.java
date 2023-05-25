@@ -26,6 +26,11 @@ public class Inventory {
     public int getMaxListSize() {
         return maxListSize;
     }
+
+    public void setMaxListSize(int maxListSize) {
+        this.maxListSize = maxListSize;
+    }
+
     GameModel gameModel = new GameModel();
 
     Controller controller;

@@ -17,6 +17,8 @@ public class Chest extends Item {
         setWorldY(worldY);
         setInsideChest(insideChest);
     }
+
+    public Chest() {}
     public boolean getIsOpened(){
         return isOpened;
     }

@@ -1,2 +1,4 @@
-hero 41 41 3
-boss 5 41 5
+hero 24 24 5
+boss 5 45 5
+ork 42 42 3
+ork 42 3 3

@@ -10,18 +10,15 @@ import model.FilesModel;
 import java.io.*;
 
 public class Player extends Entity {
-    private final KeyHandler keyHandler;
+    private KeyHandler keyHandler;
 
     private Controller controller;
 
     public Player(KeyHandler keyHandler){
         this.keyHandler = keyHandler;
-        try {
-            controller = new Controller();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
+
+    public Player() {}
 
     public Player(Controller controller, KeyHandler keyHandler) throws IOException {
         this.controller = controller;
@@ -118,11 +115,13 @@ public class Player extends Entity {
 
     @Override
     public void checkCollisions(){
-        setCollisionOn(false);
-        controller.collisionCheck.checkTile(this);
-        controller.collisionCheck.checkItem(this);
-        for (Entity entity : controller.enemiesList.getEnemiesList()){
-            controller.collisionCheck.checkEntity(this, entity);
+        if (controller != null){
+            setCollisionOn(false);
+            controller.collisionCheck.checkTile(this);
+            controller.collisionCheck.checkItem(this);
+            for (Entity entity : controller.enemiesList.getEnemiesList()){
+                controller.collisionCheck.checkEntity(this, entity);
+            }
         }
     }
 
@@ -130,22 +129,24 @@ public class Player extends Entity {
      * Handle interaction with a key, sword and shield
      */
     public void interactionWithObjects() {
-        if (keyHandler.chestPressed) {
-            controller.collisionCheck.checkChest(this);
-        }
-        if ((keyHandler.attackPressed && controller.inventory.checkSwordInList()) || isAttacking()) {
-            setAttacking(true);
-            getAttackHitbox().setX(getWorldX() + 8);
-            getAttackHitbox().setY(getWorldY() + 8);
-            changeAttackHitboxCoord();
-            for (Enemy enemy: controller.enemiesList.getEnemiesList()) {
-                if (enemy.getAlive()){
-                    controller.collisionCheck.checkHit(this, enemy);
+        if (controller != null){
+            if (keyHandler.chestPressed) {
+                controller.collisionCheck.checkChest(this);
+            }
+            if ((keyHandler.attackPressed && controller.inventory.checkSwordInList()) || isAttacking()) {
+                setAttacking(true);
+                getAttackHitbox().setX(getWorldX() + 8);
+                getAttackHitbox().setY(getWorldY() + 8);
+                changeAttackHitboxCoord();
+                for (Enemy enemy: controller.enemiesList.getEnemiesList()) {
+                    if (enemy.getAlive()){
+                        controller.collisionCheck.checkHit(this, enemy);
+                    }
                 }
             }
-        }
-        if (keyHandler.defendPressed && controller.inventory.checkShieldInList()) {
-            setDefending(true);
+            if (keyHandler.defendPressed && controller.inventory.checkShieldInList()) {
+                setDefending(true);
+            }
         }
     }
 

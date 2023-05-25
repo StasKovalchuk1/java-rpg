@@ -7,7 +7,7 @@ import java.io.File;
 import java.net.URL;
 
 public class SoundManager {
-    private static final String getHitSoundFileName = "sounds/get_hit.wav";
+    private static final String getHitSoundFileName = "sounds/get_hit_blya.wav";
     private static final String hitSoundFileName = "sounds/hit.wav";
     private static final String hitShieldSoundFileName = "sounds/hit_shield.wav";
     private static final String takeItemSoundFileName = "sounds/take_item.wav";

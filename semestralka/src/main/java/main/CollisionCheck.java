@@ -149,6 +149,7 @@ public class CollisionCheck {
                     }
                 }
                 controller.inventory.setInventory(inventory);
+                chest.getItemsInside().clear();
             }
         }
     }
