@@ -1,5 +1,6 @@
 .gitignore
-semestralka/.idea/
+.idea/
 .DS_Store
 .idea/
-semestralka/.DS_Store
+.DS_Store
+semestralka/semestralka.iml
