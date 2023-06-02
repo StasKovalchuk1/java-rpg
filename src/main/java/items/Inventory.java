@@ -5,13 +5,11 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import main.Controller;
-import model.FilesModel;
-import model.Item;
-import model.GameModel;
+import data.FilesModel;
+import data.GameModel;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Inventory {
 

@@ -1,6 +1,5 @@
 package items;
 
-import model.Item;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;

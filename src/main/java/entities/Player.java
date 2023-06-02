@@ -5,7 +5,7 @@ import main.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
-import model.FilesModel;
+import data.FilesModel;
 
 import java.io.*;
 
@@ -157,12 +157,6 @@ public class Player extends Entity {
             gc.fillText("Lives : " + getLives(), getScreenX(), getScreenY() - 5);
             if (isAttacking()) {
                 attack(gc, getScreenX(), getScreenY());
-//                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
-//                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
-//                gc.setStroke(Color.WHITE);
-//                gc.setLineWidth(2);
-//                gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
-//                gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
             } else if (isDefending()){
                 defend(gc);
             } else {
@@ -207,8 +201,8 @@ public class Player extends Entity {
 
     public void savePlayer() throws IOException {
         FileWriter fileWriter = new FileWriter(FilesModel.getEntitiesFile(), false);
-        fileWriter.write("hero " + (getWorldY() + 24) / gameModel.getTileSize() + " " +
-                (getWorldX() + 24) / gameModel.getTileSize() +  " " + getLives() + "\n");
+        fileWriter.write("hero " + (getWorldY() + 23) / gameModel.getTileSize() + " " +
+                (getWorldX() + 23) / gameModel.getTileSize() +  " " + getLives() + "\n");
         fileWriter.close();
     }
 

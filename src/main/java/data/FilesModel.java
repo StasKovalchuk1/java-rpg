@@ -1,11 +1,10 @@
-package model;
+package data;
 
 import main.MyLogger;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 
 public class FilesModel {
 

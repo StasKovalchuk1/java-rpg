@@ -2,8 +2,8 @@ package entities;
 
 import javafx.scene.canvas.GraphicsContext;
 import main.Controller;
-import model.FilesModel;
-import model.GameModel;
+import data.FilesModel;
+import data.GameModel;
 import main.MyLogger;
 
 import java.io.*;

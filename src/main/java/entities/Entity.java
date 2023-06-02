@@ -4,8 +4,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import main.Controller;
-import model.GameModel;
-import model.SoundManager;
+import data.GameModel;
+import data.SoundManager;
 
 public abstract class Entity {
     GameModel gameModel = new GameModel();

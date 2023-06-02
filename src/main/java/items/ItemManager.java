@@ -3,9 +3,8 @@ package items;
 import main.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import model.FilesModel;
-import model.Item;
-import model.GameModel;
+import data.FilesModel;
+import data.GameModel;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,6 +25,8 @@ public class ItemManager {
             throw new RuntimeException(e);
         }
     }
+
+    public ItemManager() {}
 
     /**
      * Gets items and adds them to the hashmap

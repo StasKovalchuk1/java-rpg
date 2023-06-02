@@ -3,9 +3,12 @@ package entities;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import main.Controller;
+import main.MyLogger;
 
 
 public class Ork extends Enemy{
+
+    public Ork() {}
     public Ork(Controller controller, int row, int col, int lives) {
         setController(controller);
         setDefaultValues(row, col, lives);
@@ -42,11 +45,17 @@ public class Ork extends Enemy{
      * @param col The column where enemy will be placed
      */
     private void setDefaultValues(int row, int col, int lives) {
-        setWorldX(col * gameModel.getTileSize());
-        setWorldY(row * gameModel.getTileSize());
+        if (row >= 0 && row < 50) {
+            setWorldY(row * gameModel.getTileSize());
+        } else MyLogger.getMyLogger().warning("Wrong data for Ork's row on the map");
+        if (col >= 0 && col < 50) {
+            setWorldX(col * gameModel.getTileSize());
+        } else MyLogger.getMyLogger().warning("Wrong data for Ork's column on the map");
+        if (lives > 0) {
+            setLives(lives);
+        } else MyLogger.getMyLogger().warning("Wrong! Ork has no lives");
         setSpeed(1);
         setDirection("UP");
-        setLives(lives);
         setRange(gameModel.getTileSize());
         setVisualRange(getRange());
     }

@@ -3,10 +3,9 @@ package map;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import main.Controller;
-import model.FilesModel;
-import model.GameModel;
+import data.FilesModel;
+import data.GameModel;
 import main.MyLogger;
-import model.Tile;
 
 
 import java.io.*;

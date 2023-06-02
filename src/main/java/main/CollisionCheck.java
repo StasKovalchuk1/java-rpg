@@ -2,14 +2,12 @@ package main;
 
 import entities.*;
 import items.*;
-import model.Item;
-import model.GameModel;
-import model.SoundManager;
+import items.Item;
+import data.GameModel;
+import data.SoundManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * This class is for checking collisions
@@ -17,12 +15,26 @@ import java.util.List;
 public class CollisionCheck {
     GameModel gameModel =new GameModel();
     Controller controller;
-    Chest chest = null;
+    private Chest chest = null;
+
+    public Chest getChest() {
+        return chest;
+    }
+
+    public void setChest(Chest chest) {
+        this.chest = chest;
+    }
 
     public CollisionCheck(Controller controller) {
         this.controller = controller;
-        for (Item item : controller.itemManager.getAllItems()){
-            if (item instanceof Chest) chest = (Chest) item;
+        getItemsFromItemManager();
+    }
+
+    private void getItemsFromItemManager() {
+        if (controller.itemManager != null){
+            for (Item item : controller.itemManager.getAllItems()){
+                if (item instanceof Chest) chest = (Chest) item;
+            }
         }
     }
 
@@ -123,16 +135,6 @@ public class CollisionCheck {
         if (chest != null) {
             if (entity.getHitbox().intersects(chest.getWorldX() - gameModel.getTileSize() * 0.5, chest.getWorldY() - gameModel.getTileSize() * 0.5, gameModel.getTileSize() * 2, gameModel.getTileSize() * 2)
                     && !chest.getIsOpened() && controller.keyHandler.chestPressed) {
-//                for (Item item : controller.inventory.getInventory()) {
-//                    if (item.getName().equals("key")) {
-//                        chest.setIsOpened(true);
-//                        controller.inventory.getInventory().remove(item);
-//                        for (Item itemInside : chest.getItemsInside()) {
-//                            if (controller.inventory.getInventory().size() < controller.inventory.getMaxListSize())  controller.inventory.getInventory().add(itemInside);
-//                        }
-//                        break;
-//                    }
-//                }
                 ArrayList<Item> inventory = controller.inventory.getInventory();
                 Iterator<Item> iterator = controller.inventory.getInventory().iterator();
                 while (iterator.hasNext()) {

@@ -3,16 +3,9 @@ package main;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ButtonBar;
 import javafx.stage.Stage;
-import main.Controller;
-import main.MyLogger;
-import model.FilesModel;
 
 import java.io.IOException;
-import java.util.Optional;
 
 
 public class Main extends Application{
@@ -20,7 +13,7 @@ public class Main extends Application{
     private Controller controller;
     private Group root;
 
-    public Main() throws IOException {
+    public Main() {
     }
 
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package model;
+package data;
 
 import javafx.scene.canvas.Canvas;
 

@@ -11,8 +11,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-import model.FilesModel;
-import model.GameModel;
+import data.FilesModel;
+import data.GameModel;
 import map.TileManager;
 
 import java.io.IOException;
@@ -20,26 +20,39 @@ import java.util.Optional;
 
 public class Controller extends Canvas {
     Stage stage;
-    GameModel gameModel = new GameModel();
-    public MyTimer myTimer = new MyTimer(this);
-    public KeyHandler keyHandler = new KeyHandler();
-    public TileManager tileManager = new TileManager(this);
-    public ItemManager itemManager = new ItemManager(this);
-    public Inventory inventory = new Inventory(this);
-    public Player player = new Player(this, keyHandler);
-    public EnemiesList enemiesList = new EnemiesList(this);
-    public CollisionCheck collisionCheck = new CollisionCheck(this);
+    public GameModel gameModel = new GameModel();
+    public MyTimer myTimer;
+    public KeyHandler keyHandler;
+    public TileManager tileManager;
+    public ItemManager itemManager;
+    public Inventory inventory;
+    public Player player;
+    public EnemiesList enemiesList;
+    public CollisionCheck collisionCheck;
 
-    public Controller(Stage stage) throws IOException {
-        setWidth(gameModel.getScreenWidth());
-        setHeight(gameModel.getScreenHeight());
-        this.setOnKeyPressed(keyHandler);
-        this.setOnKeyReleased(keyHandler);
-        this.requestFocus();
-        this.stage = stage;
+    public Controller(Stage stage) {
+        try {
+            myTimer = new MyTimer(this);
+            keyHandler = new KeyHandler();
+            tileManager = new TileManager(this);
+            itemManager = new ItemManager(this);
+            inventory = new Inventory(this);
+            player = new Player(this, keyHandler);
+            enemiesList = new EnemiesList(this);
+            collisionCheck = new CollisionCheck(this);
+            setWidth(gameModel.getScreenWidth());
+            setHeight(gameModel.getScreenHeight());
+            this.setOnKeyPressed(keyHandler);
+            this.setOnKeyReleased(keyHandler);
+            this.requestFocus();
+            this.stage = stage;
+        } catch (Exception e){
+            MyLogger.getMyLogger().severe("Failed to create controller");
+            e.printStackTrace();
+        }
     }
 
-    public Controller() throws IOException {}
+    public Controller() {}
 
     public void startGameThread() {
         myTimer.start();

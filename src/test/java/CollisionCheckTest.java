@@ -6,7 +6,7 @@ import main.CollisionCheck;
 import main.Controller;
 import items.ItemManager;
 import main.KeyHandler;
-import model.Item;
+import items.Item;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,9 +22,12 @@ import java.util.stream.Stream;
 import static org.mockito.Mockito.*;
 
 public class CollisionCheckTest {
-    Controller controller = mock(Controller.class);
-
+//    Controller controller = mock(Controller.class);
+    Controller controller = new Controller();
     CollisionCheck collisionCheck;
+
+    public CollisionCheckTest() {
+    }
 
     @ParameterizedTest
     @MethodSource("testDataForCheckHit")
@@ -65,91 +68,6 @@ public class CollisionCheckTest {
                         new Rectangle(100, 68, 32, 32), true, false)
         );
     }
-//
-//    @Test
-//    public void checkGetHitTest() {
-//        collisionCheck = new CollisionCheck();
-//
-//        Entity entityAttack = mock(Entity.class);
-//        Entity entityGetHit = mock(Entity.class);
-//
-//        when(entityAttack.getAlive()).thenReturn(true);
-//        when(entityGetHit.getAlive()).thenReturn(true);
-//
-//        when(entityAttack.getAttackHitbox()).thenReturn(new Rectangle(100, 100, 32, 32));
-//        when(entityGetHit.getHitbox()).thenReturn(new Rectangle(100, 68, 32, 32));
-//
-//        when(entityAttack.checkOppositeDirection(entityAttack, entityGetHit)).thenReturn(false);
-//        when(entityGetHit.isDefending()).thenReturn(false);
-//
-//        collisionCheck.checkHit(entityAttack, entityGetHit);
-//
-//        verify(entityGetHit, times(1)).getHitProcess();
-//        verify(entityGetHit, times(0)).blockHitProcess();
-//    }
-//
-//    @Test
-//    public void checkMissHitTest() {
-//        collisionCheck = new CollisionCheck();
-//        Entity entityAttack = mock(Entity.class);
-//        Entity entityGetHit = mock(Entity.class);
-//
-//        when(entityAttack.getAlive()).thenReturn(true);
-//        when(entityGetHit.getAlive()).thenReturn(true);
-//
-//        when(entityAttack.getAttackHitbox()).thenReturn(new Rectangle(100, 100, 32, 32));
-//        when(entityGetHit.getHitbox()).thenReturn(new Rectangle(100, 67, 32, 32));
-//
-//        when(entityAttack.checkOppositeDirection(entityAttack, entityGetHit)).thenReturn(false);
-//        when(entityGetHit.isDefending()).thenReturn(false);
-//
-//        collisionCheck.checkHit(entityAttack, entityGetHit);
-//
-//        verify(entityGetHit, times(0)).getHitProcess();
-//        verify(entityGetHit, times(0)).blockHitProcess();
-//    }
-//
-//    @Test
-//    public void checkBlockHitTest() {
-//        collisionCheck = new CollisionCheck();
-//        Entity entityAttack = mock(Entity.class);
-//        Entity entityGetHit = mock(Entity.class);
-//
-//        when(entityAttack.getAlive()).thenReturn(true);
-//        when(entityGetHit.getAlive()).thenReturn(true);
-//
-//        when(entityAttack.getAttackHitbox()).thenReturn(new Rectangle(100, 100, 32, 32));
-//        when(entityGetHit.getHitbox()).thenReturn(new Rectangle(100, 68, 32, 32));
-//
-//        when(entityAttack.checkOppositeDirection(entityAttack, entityGetHit)).thenReturn(true);
-//        when(entityGetHit.isDefending()).thenReturn(true);
-//
-//        collisionCheck.checkHit(entityAttack, entityGetHit);
-//
-//        verify(entityGetHit, times(0)).getHitProcess();
-//        verify(entityGetHit, times(1)).blockHitProcess();
-//    }
-//
-//    @Test
-//    public void checkNotBlockHitTest() {
-//        collisionCheck = new CollisionCheck();
-//        Entity entityAttack = mock(Entity.class);
-//        Entity entityGetHit = mock(Entity.class);
-//
-//        when(entityAttack.getAlive()).thenReturn(true);
-//        when(entityGetHit.getAlive()).thenReturn(true);
-//
-//        when(entityAttack.getAttackHitbox()).thenReturn(new Rectangle(100, 100, 32, 32));
-//        when(entityGetHit.getHitbox()).thenReturn(new Rectangle(100, 68, 32, 32));
-//
-//        when(entityAttack.checkOppositeDirection(entityAttack, entityGetHit)).thenReturn(false);
-//        when(entityGetHit.isDefending()).thenReturn(true);
-//
-//        collisionCheck.checkHit(entityAttack, entityGetHit);
-//
-//        verify(entityGetHit, times(1)).getHitProcess();
-//        verify(entityGetHit, times(0)).blockHitProcess();
-//    }
 
     @Test
     public void checkItemTest() throws Exception {
@@ -168,10 +86,7 @@ public class CollisionCheckTest {
         ItemManager itemManager = mock(ItemManager.class);
         doNothing().when(itemManager).getItems();
         when(itemManager.getAllItems()).thenReturn(items);
-
-        Field itemManagerField = Controller.class.getDeclaredField("itemManager");
-        itemManagerField.setAccessible(true);
-        itemManagerField.set(controller, itemManager);
+        controller.itemManager = itemManager;
 
         collisionCheck = new CollisionCheck(controller);
 
@@ -198,16 +113,12 @@ public class CollisionCheckTest {
 
         when(entity.getHitbox()).thenReturn(new Rectangle(100, 100, 32, 32));
 
-        // change inventory field in Controller to the mock
         Inventory inventory = mock(Inventory.class);
         ArrayList<Item> inventoryList = new ArrayList<>();
         inventoryList.add(item2);
         when(inventory.getInventory()).thenReturn(inventoryList);
 
-        Field inventoryField = Controller.class.getDeclaredField("inventory");
-        inventoryField.setAccessible(true);
-        inventoryField.set(controller, inventory);
-
+        controller.inventory = inventory;
         when(controller.inventory.getInventory()).thenReturn(inventoryList);
         when(controller.inventory.getMaxListSize()).thenReturn(15);
 
@@ -229,10 +140,7 @@ public class CollisionCheckTest {
         // change itemManager field in Controller to the mock one
         ItemManager itemManager = mock(ItemManager.class);
         doNothing().when(itemManager).getItems();
-
-        Field itemManagerField = Controller.class.getDeclaredField("itemManager");
-        itemManagerField.setAccessible(true);
-        itemManagerField.set(controller, itemManager);
+        controller.itemManager = itemManager;
 
         collisionCheck = new CollisionCheck(controller);
         Entity entity = mock(Entity.class);

@@ -80,22 +80,9 @@ public class Boss extends Enemy{
                 if ((getScreenX() + gameModel.getTileSize() >= 0 && getScreenX() - gameModel.getTileSize() <= gameModel.getScreenWidth()) &&
                         (getScreenY() + gameModel.getTileSize() >= 0 && getScreenY() - gameModel.getTileSize() <= gameModel.getScreenHeight())) {
                     gc.drawImage(getEntityImage(), getScreenX(), getScreenY(), gameModel.getTileSize() * 2, gameModel.getTileSize() * 2);
-//                    int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
-//                    int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
-//                    gc.setStroke(Color.WHITE);
-//                    gc.setLineWidth(2);
-//                    gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
-//                    gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
                 }
             } else {
                 attack(gc, getScreenX(), getScreenY());
-//                int x = (int) (getAttackHitbox().getX() - getGamePane().player.getWorldX() + getGamePane().player.getScreenX());
-//                int y = (int) (getAttackHitbox().getY() - getGamePane().player.getWorldY() + getGamePane().player.getScreenY());
-//                gc.setStroke(Color.WHITE);
-//                gc.setLineWidth(2);
-//                gc.fillRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
-//                gc.strokeRect(x, y, getAttackHitbox().getWidth(), getAttackHitbox().getHeight());
-
             }
         }
     }
